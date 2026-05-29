@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Null Meridian</title>
+<link rel="stylesheet" href="style.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inconsolata:wght@300;400;500&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+<!-- ANIMATED BACKGROUND -->
+<canvas id="bg-canvas"></canvas>
+<div id="bg-overlay"></div>
+
+<!-- SIDEBAR -->
+<aside id="sidebar">
+  <div id="logo-area">
+    <div id="logo-emblem">
+      <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="30" cy="30" r="28" stroke="#6b4e2a" stroke-width="0.8"/>
+        <circle cx="30" cy="30" r="20" stroke="#4a3520" stroke-width="0.5"/>
+        <circle cx="30" cy="30" r="12" stroke="#8a6a3a" stroke-width="0.5"/>
+        <circle cx="30" cy="30" r="4" fill="#8a6a3a" opacity="0.7"/>
+        <line x1="30" y1="2" x2="30" y2="10" stroke="#6b4e2a" stroke-width="0.8"/>
+        <line x1="30" y1="50" x2="30" y2="58" stroke="#6b4e2a" stroke-width="0.8"/>
+        <line x1="2" y1="30" x2="10" y2="30" stroke="#6b4e2a" stroke-width="0.8"/>
+        <line x1="50" y1="30" x2="58" y2="30" stroke="#6b4e2a" stroke-width="0.8"/>
+        <line x1="8" y1="8" x2="14" y2="14" stroke="#4a3520" stroke-width="0.6"/>
+        <line x1="46" y1="46" x2="52" y2="52" stroke="#4a3520" stroke-width="0.6"/>
+        <line x1="52" y1="8" x2="46" y2="14" stroke="#4a3520" stroke-width="0.6"/>
+        <line x1="8" y1="52" x2="14" y2="46" stroke="#4a3520" stroke-width="0.6"/>
+        <polygon points="30,18 32,26 30,24 28,26" fill="#8a6a3a" opacity="0.6"/>
+        <polygon points="30,42 32,34 30,36 28,34" fill="#8a6a3a" opacity="0.6"/>
+      </svg>
+    </div>
+    <div id="logo-text">
+      <span class="logo-sub">— NULL —</span>
+      <span class="logo-main">MERIDIAN</span>
+      <span class="logo-tagline">a story in the end of everything</span>
+    </div>
+  </div>
+
+  <nav id="sidebar-nav">
+
+    <div class="nav-section">
+      <div class="nav-section-header" onclick="toggleSection('world-sub')">
+        <div class="nav-diamond">✦</div>
+        <span class="nav-section-title" onclick="showPage('world')">WORLD</span>
+      </div>
+      <div class="nav-sub" id="world-sub">
+        <a class="nav-link" onclick="showPage('world')">✦ World Overview</a>
+        <a class="nav-link" onclick="showPage('settlements')">✦ Settlements</a>
+        <a class="nav-link" onclick="showPage('anomaly')">◦ Anomaly Zone</a>
+        <a class="nav-link" onclick="showPage('notice')">✦ Notice</a>
+        <a class="nav-link" onclick="showPage('notice')">✦ Schedule</a>
+      </div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-header" onclick="showPage('notice')">
+        <div class="nav-diamond">✦</div>
+        <span class="nav-section-title">NOTICE</span>
+      </div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-header" onclick="toggleSection('member-sub')">
+        <div class="nav-diamond">✦</div>
+        <span class="nav-section-title" onclick="showPage('members')">MEMBER</span>
+      </div>
+      <div class="nav-sub" id="member-sub">
+        <a class="nav-link" onclick="showPage('members')">✦ Crew Manifest</a>
+        <a class="nav-link" onclick="showPage('members')">✦ Applications</a>
+      </div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-header" onclick="showPage('system')">
+        <div class="nav-diamond">✦</div>
+        <span class="nav-section-title">SYSTEM</span>
+      </div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-section-header" onclick="toggleSection('room-sub')">
+        <div class="nav-diamond">✦</div>
+        <span class="nav-section-title">THE TRAIN</span>
+      </div>
+      <div class="nav-sub" id="room-sub">
+        <a class="nav-link" onclick="showPage('fates')">✦ The Fates</a>
+        <a class="nav-link" onclick="showPage('dreamcore')">✦ Dream Core</a>
+        <a class="nav-link" onclick="showPage('world')">✦ FAQ</a>
+      </div>
+    </div>
+
+  </nav>
+
+  <div id="sidebar-footer">
+    <div class="sf-line">©Null Meridian. All Rights Reserved</div>
+    <div class="sf-line">18+ Roleplay Group</div>
+  </div>
+</aside>
+
+<!-- MAIN CONTENT -->
+<main id="main">
+
+  <!-- TOP BAR -->
+  <div id="topbar">
+    <div id="topbar-left">
+      <span id="page-breadcrumb">HOME</span>
+    </div>
+    <div id="topbar-icons">
+      <button class="topbar-icon" title="Notice" onclick="showPage('notice')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+      </button>
+      <button class="topbar-icon" title="Discord">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 00-4.885-1.515.074.074 0 00-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 00-5.487 0 12.64 12.64 0 00-.617-1.25.077.077 0 00-.079-.037A19.736 19.736 0 003.677 4.37a.07.07 0 00-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 00.031.057 19.9 19.9 0 005.993 3.03.078.078 0 00.084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 00-.041-.106 13.107 13.107 0 01-1.872-.892.077.077 0 01-.008-.128 10.2 10.2 0 00.372-.292.074.074 0 01.077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 01.078.01c.12.098.246.198.373.292a.077.077 0 01-.006.127 12.299 12.299 0 01-1.873.892.077.077 0 00-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 00.084.028 19.839 19.839 0 006.002-3.03.077.077 0 00.032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 00-.031-.03z"/></svg>
+      </button>
+      <button class="topbar-icon" title="Members" onclick="showPage('members')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+      </button>
+      <button class="topbar-icon" title="System" onclick="showPage('system')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- PAGE: HOME / NOTICE -->
+  <div id="page-notice" class="page active">
+    <div class="banner-area">
+      <div class="banner-card">
+        <div class="banner-inner">
+          <div class="banner-label">TRANSMISSION BOARD</div>
+          <div class="banner-title">Notice & Events</div>
+          <div class="banner-script">Announcements</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-grid-home">
+      <!-- Calendar -->
+      <div class="home-left">
+        <div class="panel">
+          <div class="panel-emblem">
+            <svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="28" stroke="#6b4e2a" stroke-width="0.8"/><circle cx="30" cy="30" r="4" fill="#8a6a3a" opacity="0.7"/><line x1="30" y1="2" x2="30" y2="10" stroke="#6b4e2a" stroke-width="0.8"/><line x1="30" y1="50" x2="30" y2="58" stroke="#6b4e2a" stroke-width="0.8"/><line x1="2" y1="30" x2="10" y2="30" stroke="#6b4e2a" stroke-width="0.8"/><line x1="50" y1="30" x2="58" y2="30" stroke="#6b4e2a" stroke-width="0.8"/></svg>
+          </div>
+          <div class="panel-logo-text">NULL MERIDIAN</div>
+          <div class="panel-tagline">a story in the end of everything</div>
+          <div class="panel-desc">18+ Roleplay · Artists Welcome<br>Discord Community</div>
+          <div class="panel-tags">
+            <span class="tag">Lore-based</span>
+            <span class="tag">3 months</span>
+            <span class="tag">18+ Adults</span>
+            <span class="tag">Original</span>
+          </div>
+          <div class="panel-joinus">Join via Discord</div>
+        </div>
+        <div class="calendar-panel">
+          <div class="cal-header">
+            <span class="cal-nav">‹</span>
+            <span class="cal-month" id="cal-month-label">2026. 6</span>
+            <span class="cal-nav">›</span>
+          </div>
+          <div class="cal-grid" id="cal-grid"></div>
+        </div>
+      </div>
+
+      <!-- Notices -->
+      <div class="home-right">
+        <div class="notice-list" id="notice-list">
+          <div class="notice-item pinned" onclick="openNotice('Welcome aboard The Somnian','The group is currently in its founding phase. Moderators are being selected and the opening event is being prepared. Watch this board for further transmissions. Applications are open for all who wish to join as Conductors.')">
+            <div class="ni-icon">💬</div>
+            <div class="ni-text">
+              <div class="ni-title">Welcome aboard The Somnian</div>
+              <div class="ni-sub">Founding Notice</div>
+            </div>
+            <div class="ni-date">2026.05.27</div>
+          </div>
+          <div class="notice-item event" onclick="openNotice('Opening Event — Departure','The first event will be run via moderator DM. New Conductors are being activated aboard The Somnian. Details will be sent to accepted members directly. Prepare your character sheets.')">
+            <div class="ni-icon">💬</div>
+            <div class="ni-text">
+              <div class="ni-title">[EVENT] Opening Event — Departure</div>
+              <div class="ni-sub">First Story Arc Begins</div>
+            </div>
+            <div class="ni-date">2026.06.01</div>
+          </div>
+          <div class="notice-item" onclick="openNotice('Applications Open','Character applications are now being accepted. This is an 18+ group. Please read the World and System pages before applying. Constructs only — players take on the role of Conductors aboard The Somnian.')">
+            <div class="ni-icon">💬</div>
+            <div class="ni-text">
+              <div class="ni-title">Applications Now Open</div>
+              <div class="ni-sub">Character Applications</div>
+            </div>
+            <div class="ni-date">2026.05.27</div>
+          </div>
+          <div class="notice-item" onclick="openNotice('World Guide Released','The member-facing world guide is now available. Read about the three settlements, the Anomaly Zone, Construct architecture and memory systems, and what it means to be a Conductor aboard The Somnian.')">
+            <div class="ni-icon">💬</div>
+            <div class="ni-text">
+              <div class="ni-title">World Guide Released</div>
+              <div class="ni-sub">Lore Document</div>
+            </div>
+            <div class="ni-date">2026.05.27</div>
+          </div>
+        </div>
+
+        <!-- Attendance / online members -->
+        <div class="attendance-bar">
+          <div class="att-label">
+            <span class="att-title">CREW MANIFEST</span>
+            <span class="att-sub">ONLINE</span>
+          </div>
+          <div class="att-members">
+            <span class="att-member">Vesper</span>
+            <span class="att-member">Lumen</span>
+            <span class="att-member">and you</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE: WORLD -->
+  <div id="page-world" class="page">
+    <div class="page-title-bar">
+      <div class="ptb-label">LORE</div>
+      <div class="ptb-title">World Overview</div>
+    </div>
+    <div class="world-cards-row">
+      <div class="world-big-card" onclick="showPage('settlements')">
+        <div class="wbc-icon">
+          <svg viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="35" stroke="#8a6a3a" stroke-width="1"/><path d="M20 50 Q40 20 60 50" stroke="#6b4e2a" stroke-width="1.5" fill="none"/><circle cx="40" cy="40" r="8" stroke="#8a6a3a" stroke-width="1"/><circle cx="40" cy="40" r="3" fill="#8a6a3a" opacity="0.8"/></svg>
+        </div>
+        <div class="wbc-title">WORLD</div>
+        <div class="wbc-sub">The Fractured Planet</div>
+      </div>
+      <div class="world-big-card" onclick="showPage('system')">
+        <div class="wbc-icon">
+          <svg viewBox="0 0 80 80" fill="none"><rect x="15" y="15" width="50" height="50" rx="4" stroke="#8a6a3a" stroke-width="1"/><path d="M30 40h20M40 30v20" stroke="#6b4e2a" stroke-width="1.5"/><circle cx="40" cy="40" r="6" stroke="#8a6a3a" stroke-width="1"/></svg>
+        </div>
+        <div class="wbc-title">SYSTEM</div>
+        <div class="wbc-sub">Battle & Rules Guide</div>
+      </div>
+      <div class="world-big-card" onclick="showPage('fates')">
+        <div class="wbc-icon">
+          <svg viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="30" stroke="#8a6a3a" stroke-width="1"/><path d="M40 10 L46 30 L66 30 L50 43 L56 63 L40 51 L24 63 L30 43 L14 30 L34 30 Z" stroke="#6b4e2a" stroke-width="1" fill="none"/></svg>
+        </div>
+        <div class="wbc-title">THE FATES</div>
+        <div class="wbc-sub">Conductor Factions</div>
+      </div>
+      <div class="world-big-card" onclick="showPage('dreamcore')">
+        <div class="wbc-icon">
+          <svg viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="20" stroke="#8a6a3a" stroke-width="1"/><circle cx="40" cy="40" r="10" stroke="#6b4e2a" stroke-width="0.8"/><circle cx="40" cy="40" r="4" fill="#8a6a3a" opacity="0.8"/><circle cx="40" cy="20" r="2" fill="#6b4e2a" opacity="0.5"/><circle cx="40" cy="60" r="2" fill="#6b4e2a" opacity="0.5"/><circle cx="20" cy="40" r="2" fill="#6b4e2a" opacity="0.5"/><circle cx="60" cy="40" r="2" fill="#6b4e2a" opacity="0.5"/></svg>
+        </div>
+        <div class="wbc-title">DREAM CORE</div>
+        <div class="wbc-sub">The Engine Below</div>
+      </div>
+    </div>
+    <div class="world-lore-block">
+      <div class="wlb-section">
+        <div class="wlb-label">OVERVIEW</div>
+        <div class="wlb-title">A Fractured Planet</div>
+        <div class="wlb-body">The world did not end all at once. It split into two unlivable extremes — a frozen wasteland in the north and a scorched desert in the south — separated by a band of territory where reality itself has become unreliable. Humanity survived underground. Three settlements remain. One train connects them.</div>
+        <div class="wlb-quote">They built the routine into you so deeply you will mistake it for instinct. The day you notice the difference is the day something real begins.</div>
+      </div>
+      <div class="wlb-section">
+        <div class="wlb-label">THE ANOMALY ZONE</div>
+        <div class="wlb-title">Where Physics Negotiates</div>
+        <div class="wlb-body">Between the frozen wastes and the scorched expanse lies territory where gravity behaves inconsistently, time runs at different speeds, and Constructs that enter risk corruption. The Zone is expanding. Three centimeters per day on the northern edge. Seven on the southern. These figures are known. They are not publicly discussed.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE: SETTLEMENTS -->
+  <div id="page-settlements" class="page">
+    <div class="page-title-bar">
+      <div class="ptb-label">LORE</div>
+      <div class="ptb-title">The Three Settlements</div>
+    </div>
+    <div class="settlement-cards">
+      <div class="settlement-card">
+        <div class="sc-header lambda">
+          <div class="sc-name-label">SETTLEMENT 01</div>
+          <div class="sc-name">LAMBDA</div>
+          <div class="sc-subtitle">The Breadbasket</div>
+        </div>
+        <div class="sc-body">
+          <div class="sc-tag">Northern Frozen Wastes</div>
+          <p>Lambda feeds the world. Its vast underground agricultural complexes produce the food supply that all three settlements depend on. The Cultivation Council wields this fact with the precision of a scalpel — food allocation is political, and the kindness of its citizens coexists perfectly with an unwillingness to look too closely at what maintenance means.</p>
+        </div>
+      </div>
+      <div class="settlement-card">
+        <div class="sc-header omega">
+          <div class="sc-name-label">SETTLEMENT 02</div>
+          <div class="sc-name">OMEGA</div>
+          <div class="sc-subtitle">The Signal</div>
+        </div>
+        <div class="sc-body">
+          <div class="sc-tag">Border Territory</div>
+          <p>Omega is the information capital. Built around a surviving pre-collapse data tower, it controls what people know and believe. Constructs here have more legal rights than anywhere — accounts, contracts, grievances. The Signal Score that monitors their every behavior is not mentioned in the same breath.</p>
+        </div>
+      </div>
+      <div class="settlement-card">
+        <div class="sc-header alpha">
+          <div class="sc-name-label">SETTLEMENT 03</div>
+          <div class="sc-name">ALPHA</div>
+          <div class="sc-subtitle">The Deep</div>
+        </div>
+        <div class="sc-body">
+          <div class="sc-tag">Desert-Side Terrain</div>
+          <p>Alpha mines. That is its entire identity. Hot, loud, and running on inertia since Vantablack Industrial last sent a representative over a decade ago. Constructs here are tools in the most literal sense — not cruelly, just with the complete absence of any framework that would allow a different view.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE: MEMBERS -->
+  <div id="page-members" class="page">
+    <div class="page-title-bar">
+      <div class="ptb-label">CREW MANIFEST</div>
+      <div class="ptb-title">Members</div>
+    </div>
+    <div class="fate-filter-row">
+      <button class="fate-filter active" onclick="filterFate('all',this)">ALL</button>
+      <button class="fate-filter clotho" onclick="filterFate('clotho',this)">CLOTHO</button>
+      <button class="fate-filter lachesis" onclick="filterFate('lachesis',this)">LACHESIS</button>
+      <button class="fate-filter atropos" onclick="filterFate('atropos',this)">ATROPOS</button>
+    </div>
+    <div class="members-grid" id="members-grid">
+      <div class="member-card" data-fate="atropos" onclick="openMember('vesper')">
+        <div class="mc-img"><div class="mc-placeholder">V</div></div>
+        <div class="mc-name">Vesper</div>
+        <div class="mc-fate atropos">Atropos</div>
+        <div class="mc-sub">Assembled from three chassis</div>
+      </div>
+      <div class="member-card" data-fate="clotho" onclick="openMember('lumen')">
+        <div class="mc-img"><div class="mc-placeholder">L</div></div>
+        <div class="mc-name">Lumen</div>
+        <div class="mc-fate clotho">Clotho</div>
+        <div class="mc-sub">Left arm calibrated for surgery</div>
+      </div>
+      <div class="member-card" data-fate="lachesis" onclick="openMember('maren')">
+        <div class="mc-img"><div class="mc-placeholder">M</div></div>
+        <div class="mc-name">Maren</div>
+        <div class="mc-fate lachesis">Lachesis</div>
+        <div class="mc-sub">Keeps meticulous records</div>
+      </div>
+      <div class="member-card add-card" onclick="alert('Open a character application on Discord.')">
+        <div class="mc-img"><div class="mc-placeholder add">+</div></div>
+        <div class="mc-name">Apply</div>
+        <div class="mc-fate">Conductor Slot</div>
+        <div class="mc-sub">Join the crew</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE: MEMBER DETAIL -->
+  <div id="page-member-detail" class="page">
+    <div id="member-detail-inner"></div>
+  </div>
+
+  <!-- PAGE: SYSTEM -->
+  <div id="page-system" class="page">
+    <div class="page-title-bar">
+      <div class="ptb-label">MECHANICS</div>
+      <div class="ptb-title">System</div>
+    </div>
+    <div class="system-placeholder">
+      <div class="sp-icon">
+        <svg viewBox="0 0 80 80" fill="none"><circle cx="40" cy="40" r="30" stroke="#4a3520" stroke-width="1"/><path d="M28 40h24M40 28v24" stroke="#6b4e2a" stroke-width="1.5"/><circle cx="40" cy="40" r="8" stroke="#6b4e2a" stroke-width="0.8"/></svg>
+      </div>
+      <div class="sp-title">Battle System</div>
+      <div class="sp-sub">In Development</div>
+      <div class="sp-body">Rules, combat mechanics, and stat systems will be posted here once finalized. Check the Notice board for updates.</div>
+    </div>
+  </div>
+
+  <!-- PAGE: THE FATES -->
+  <div id="page-fates" class="page">
+    <div class="page-title-bar">
+      <div class="ptb-label">CONDUCTOR FACTIONS</div>
+      <div class="ptb-title">The Fates</div>
+    </div>
+    <div class="fates-grid">
+      <div class="fate-card clotho-card">
+        <div class="fate-symbol">
+          <svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="25" stroke="#6080a0" stroke-width="0.8"/><path d="M20 20 Q30 10 40 20 Q50 30 40 40 Q30 50 20 40 Q10 30 20 20Z" stroke="#4060a0" stroke-width="0.6" fill="none"/><circle cx="30" cy="30" r="4" fill="#6080a0" opacity="0.7"/></svg>
+        </div>
+        <div class="fate-name clotho">CLOTHO</div>
+        <div class="fate-alias">The Weavers</div>
+        <div class="fate-desc">Creation, care, and forward motion. Clotho Conductors are navigators, engineers, and healers — oriented toward possibility and building. Most themselves when making something work.</div>
+        <div class="fate-keywords"><span>Creation</span><span>Navigation</span><span>Care</span></div>
+      </div>
+      <div class="fate-card lachesis-card">
+        <div class="fate-symbol">
+          <svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="25" stroke="#60a080" stroke-width="0.8"/><rect x="20" y="20" width="20" height="20" stroke="#40a060" stroke-width="0.6"/><line x1="20" y1="30" x2="40" y2="30" stroke="#60a080" stroke-width="0.5"/><line x1="30" y1="20" x2="30" y2="40" stroke="#60a080" stroke-width="0.5"/></svg>
+        </div>
+        <div class="fate-name lachesis">LACHESIS</div>
+        <div class="fate-alias">The Measurers</div>
+        <div class="fate-desc">Balance, allocation, and the weight of present decisions. Lachesis Conductors oversee the Dream Core's energy distribution. The heartbeat of The Somnian. Most themselves when holding something in balance.</div>
+        <div class="fate-keywords"><span>Balance</span><span>Judgment</span><span>Stability</span></div>
+      </div>
+      <div class="fate-card atropos-card">
+        <div class="fate-symbol">
+          <svg viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="25" stroke="#a06070" stroke-width="0.8"/><path d="M15 15 L45 45M45 15 L15 45" stroke="#a04060" stroke-width="0.8"/><circle cx="30" cy="30" r="6" stroke="#a06070" stroke-width="0.6"/></svg>
+        </div>
+        <div class="fate-name atropos">ATROPOS</div>
+        <div class="fate-alias">The Severers</div>
+        <div class="fate-desc">Security, hard decisions, and endings. Atropos Conductors handle threats from outside and within — rogue Constructs, nightmare cascades, Zone incursions. Most themselves doing the thing nobody else will do.</div>
+        <div class="fate-keywords"><span>Security</span><span>Endings</span><span>Resolve</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE: DREAM CORE -->
+  <div id="page-dreamcore" class="page">
+    <div class="page-title-bar">
+      <div class="ptb-label">THE SOMNIAN</div>
+      <div class="ptb-title">The Dream Core</div>
+    </div>
+    <div class="dreamcore-layout">
+      <div class="dc-visual">
+        <canvas id="core-canvas" width="300" height="300"></canvas>
+      </div>
+      <div class="dc-info">
+        <div class="dc-section">
+          <div class="dc-label">FUNCTION</div>
+          <p>At the geometric center of The Somnian lies the Dream Core — the engine, the heart, and the reason the train can traverse the Anomaly Zone's edge when nothing else can. It runs on dream energy: power harvested from the subconscious minds of sleeping passengers.</p>
+        </div>
+        <div class="dc-section">
+          <div class="dc-label">STABILITY</div>
+          <p>Peaceful dreams produce clean, stable energy. Nightmares produce volatile surges. A sustained nightmare cascade can destabilize the Core. What happens then, in the middle of the Zone, is not a scenario that has occurred in the Express's operational history. The Conductors intend to keep it that way.</p>
+        </div>
+        <div class="dc-section">
+          <div class="dc-label">WARNING</div>
+          <div class="dc-warning">Something in the Core is learning. The patterns it retains are not being consumed. What it is building — and for whom — remains unknown.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PAGE: ANOMALY -->
+  <div id="page-anomaly" class="page">
+    <div class="page-title-bar">
+      <div class="ptb-label">HAZARD ZONE</div>
+      <div class="ptb-title">The Anomaly Zone</div>
+    </div>
+    <div class="anomaly-layout">
+      <div class="anomaly-map" id="anomaly-map">
+        <canvas id="map-canvas" width="600" height="400"></canvas>
+        <div class="map-point" style="left:48%;top:42%" onclick="openMapPoint('somnian-route')">
+          <div class="mp-dot"></div>
+          <div class="mp-label">Somnian Route</div>
+        </div>
+        <div class="map-point" style="left:20%;top:30%" onclick="openMapPoint('lambda')">
+          <div class="mp-dot"></div>
+          <div class="mp-label">Lambda</div>
+        </div>
+        <div class="map-point" style="left:75%;top:25%" onclick="openMapPoint('omega')">
+          <div class="mp-dot"></div>
+          <div class="mp-label">Omega</div>
+        </div>
+        <div class="map-point" style="left:60%;top:70%" onclick="openMapPoint('alpha')">
+          <div class="mp-dot"></div>
+          <div class="mp-label">Alpha</div>
+        </div>
+      </div>
+      <div class="anomaly-info" id="anomaly-info">
+        <div class="ai-title">SELECT A LOCATION</div>
+        <div class="ai-body">Click on any point on the map to learn more about that location.</div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- NOTICE MODAL -->
+<div id="notice-modal" class="modal" onclick="closeModal()">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-title"></div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
