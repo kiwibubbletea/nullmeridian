@@ -2,6 +2,213 @@
    NULL MERIDIAN — SCRIPT.JS
    ============================= */
 
+/* =====================================================================
+   MUSIC CONFIGURATION — edit these to change tracks
+   =====================================================================
+   PLAYLIST_IDS   : YouTube video IDs for the ambient background playlist
+                    Replace with your own. These play on every page.
+   memberData[x].youtubeId : A single YouTube video ID per character.
+                    Plays when that member's detail page is opened.
+                    Set to null to keep the playlist playing instead.
+   ===================================================================== */
+const PLAYLIST_IDS = [
+  'jfKfPfyJRdk',   // lofi hip hop radio — replace with your tracks
+  '4xDzrJKXOOY',   // synthwave / atmospheric
+  'n61ULEU7CO0',    // dark ambient
+];
+
+// Volume levels (0–100)
+const PLAYLIST_VOLUME  = 40;
+const MEMBER_VOLUME    = 55;
+const FADE_STEPS       = 20;
+const FADE_INTERVAL_MS = 50;
+
+// ===== YOUTUBE PLAYER STATE =====
+let ytPlayer        = null;   // the IFrame API player object
+let ytReady         = false;  // true once onYouTubeIframeAPIReady fires
+let ytPlaying       = false;
+let ytPendingPlay   = false;  // play requested before API ready
+let currentMode     = 'playlist'; // 'playlist' | 'member'
+let currentPlaylistIndex = 0;
+
+// Called by YouTube IFrame API automatically when script loads
+function onYouTubeIframeAPIReady() {
+  ytPlayer = new YT.Player('yt-player', {
+    height: '1',
+    width: '1',
+    videoId: PLAYLIST_IDS[0],
+    playerVars: {
+      autoplay: 0,
+      controls: 0,
+      disablekb: 1,
+      fs: 0,
+      iv_load_policy: 3,
+      modestbranding: 1,
+      rel: 0,
+    },
+    events: {
+      onReady:       onPlayerReady,
+      onStateChange: onPlayerStateChange,
+    }
+  });
+}
+
+function onPlayerReady() {
+  ytReady = true;
+  ytPlayer.setVolume(PLAYLIST_VOLUME);
+  if (ytPendingPlay) {
+    ytPendingPlay = false;
+    startPlaylist();
+  }
+}
+
+function onPlayerStateChange(e) {
+  // YT.PlayerState.ENDED = 0 — auto-advance playlist
+  if (e.data === YT.PlayerState.ENDED && currentMode === 'playlist') {
+    musicNext();
+  }
+  // Update play/pause icon
+  ytPlaying = (e.data === YT.PlayerState.PLAYING);
+  updateMusicBar();
+}
+
+// ===== ENTER OVERLAY =====
+function enterSite() {
+  const overlay = document.getElementById('enter-overlay');
+  overlay.classList.add('hidden');
+  setTimeout(() => { overlay.style.display = 'none'; }, 900);
+
+  // Start music — if API not ready yet, flag it for when it is
+  if (ytReady) {
+    startPlaylist();
+  } else {
+    ytPendingPlay = true;
+  }
+}
+
+// ===== PLAYLIST CONTROL =====
+function startPlaylist() {
+  currentMode = 'playlist';
+  currentPlaylistIndex = 0;
+  ytPlayer.loadVideoById(PLAYLIST_IDS[currentPlaylistIndex]);
+  ytPlayer.setVolume(PLAYLIST_VOLUME);
+  updateMusicBar();
+}
+
+function musicNext() {
+  if (currentMode === 'playlist') {
+    currentPlaylistIndex = (currentPlaylistIndex + 1) % PLAYLIST_IDS.length;
+    ytPlayer.loadVideoById(PLAYLIST_IDS[currentPlaylistIndex]);
+    ytPlayer.setVolume(PLAYLIST_VOLUME);
+  }
+  updateMusicBar();
+}
+
+function musicPrev() {
+  if (currentMode === 'playlist') {
+    currentPlaylistIndex = (currentPlaylistIndex - 1 + PLAYLIST_IDS.length) % PLAYLIST_IDS.length;
+    ytPlayer.loadVideoById(PLAYLIST_IDS[currentPlaylistIndex]);
+    ytPlayer.setVolume(PLAYLIST_VOLUME);
+  } else {
+    // In member mode, prev goes back to playlist
+    returnToPlaylist();
+  }
+  updateMusicBar();
+}
+
+function musicToggle() {
+  if (!ytReady) return;
+  const state = ytPlayer.getPlayerState();
+  if (state === YT.PlayerState.PLAYING) {
+    ytPlayer.pauseVideo();
+  } else {
+    ytPlayer.playVideo();
+  }
+}
+
+// ===== MEMBER SIGNATURE MUSIC =====
+function playMemberTrack(youtubeId, memberName) {
+  if (!ytReady || !youtubeId) return;
+  currentMode = 'member';
+  fadeVolume(ytPlayer.getVolume(), 0, () => {
+    ytPlayer.loadVideoById(youtubeId);
+    ytPlayer.setVolume(MEMBER_VOLUME);
+    fadeVolume(0, MEMBER_VOLUME, null);
+  });
+  // Update music bar label
+  document.getElementById('music-track-name').textContent = memberName;
+  document.getElementById('music-track-sub').textContent  = 'Signature Track';
+  document.getElementById('music-track-name').classList.add('member-track');
+}
+
+function returnToPlaylist() {
+  if (!ytReady) return;
+  currentMode = 'playlist';
+  fadeVolume(ytPlayer.getVolume(), 0, () => {
+    ytPlayer.loadVideoById(PLAYLIST_IDS[currentPlaylistIndex]);
+    ytPlayer.setVolume(PLAYLIST_VOLUME);
+    fadeVolume(0, PLAYLIST_VOLUME, null);
+  });
+  document.getElementById('music-track-name').classList.remove('member-track');
+  updateMusicBar();
+}
+
+// Smooth volume fade: from → to, then call cb
+function fadeVolume(from, to, cb) {
+  let step = 0;
+  const diff = to - from;
+  const timer = setInterval(() => {
+    step++;
+    const vol = Math.round(from + (diff * step / FADE_STEPS));
+    if (ytReady) ytPlayer.setVolume(Math.max(0, Math.min(100, vol)));
+    if (step >= FADE_STEPS) {
+      clearInterval(timer);
+      if (cb) cb();
+    }
+  }, FADE_INTERVAL_MS);
+}
+
+// ===== MUSIC BAR UI =====
+function updateMusicBar() {
+  if (!ytReady) return;
+  const bar       = document.getElementById('music-bar');
+  const nameEl    = document.getElementById('music-track-name');
+  const subEl     = document.getElementById('music-track-sub');
+  const icon      = document.getElementById('music-play-icon');
+  const state     = ytPlayer.getPlayerState();
+  const isPlaying = (state === YT.PlayerState.PLAYING);
+
+  bar.classList.toggle('playing', isPlaying);
+
+  // Update icon: pause bars when playing, play triangle when paused
+  if (isPlaying) {
+    icon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
+  } else {
+    icon.innerHTML = '<path d="M8 5v14l11-7z"/>';
+  }
+
+  // Only update text if we're in playlist mode (member mode sets its own)
+  if (currentMode === 'playlist') {
+    try {
+      const data = ytPlayer.getVideoData();
+      if (data && data.title) {
+        nameEl.textContent = data.title;
+      } else {
+        nameEl.textContent = `Track ${currentPlaylistIndex + 1}`;
+      }
+    } catch (e) {
+      nameEl.textContent = `Track ${currentPlaylistIndex + 1}`;
+    }
+    subEl.textContent = `Ambient Playlist · ${currentPlaylistIndex + 1} / ${PLAYLIST_IDS.length}`;
+    nameEl.classList.remove('member-track');
+  }
+}
+
+// Poll to keep music bar title fresh (YouTube title loads async)
+setInterval(() => {
+  if (ytReady && currentMode === 'playlist') updateMusicBar();
+}, 2000);
+
 // ===== PAGE NAVIGATION =====
 const pages = {
   'notice':        'HOME',
@@ -9,6 +216,7 @@ const pages = {
   'settlements':   'WORLD > SETTLEMENTS',
   'members':       'MEMBER',
   'member-detail': 'MEMBER > CHARACTER',
+  'construct':     'MEMBER > MAKE YOUR CONSTRUCT',
   'system':        'SYSTEM',
   'fates':         'WORLD > THE FATES',
   'dreamcore':     'WORLD > DREAM CORE',
@@ -25,6 +233,10 @@ function showPage(id) {
   }
   if (id === 'dreamcore') initCoreCanvas();
   if (id === 'anomaly') initMapCanvas();
+  // If navigating away from member detail back to members, restore playlist
+  if (id === 'members' && currentMode === 'member') {
+    returnToPlaylist();
+  }
 }
 
 // ===== SIDEBAR SECTIONS =====

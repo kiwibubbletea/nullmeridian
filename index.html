@@ -71,7 +71,7 @@
       </div>
       <div class="nav-sub" id="member-sub">
         <a class="nav-link" onclick="showPage('members')">✦ Crew Manifest</a>
-        <a class="nav-link" onclick="showPage('members')">✦ Applications</a>
+        <a class="nav-link" onclick="showPage('construct')">✦ Make Your Construct</a>
       </div>
     </div>
 
@@ -96,11 +96,35 @@
 
   </nav>
 
+  <!-- MUSIC BAR (inside sidebar, above footer) -->
+  <div id="music-bar">
+    <div id="music-bar-track">
+      <div id="music-track-name">Loading...</div>
+      <div id="music-track-sub">Ambient Playlist</div>
+    </div>
+    <div id="music-bar-controls">
+      <button class="music-btn" id="music-prev" title="Previous" onclick="musicPrev()">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+      </button>
+      <button class="music-btn" id="music-play" title="Play/Pause" onclick="musicToggle()">
+        <svg id="music-play-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+      </button>
+      <button class="music-btn" id="music-next" title="Next" onclick="musicNext()">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zm2-8.14L11.03 12 8 14.14V9.86zM16 6h2v12h-2z"/></svg>
+      </button>
+    </div>
+  </div>
+
   <div id="sidebar-footer">
     <div class="sf-line">©Null Meridian. All Rights Reserved</div>
     <div class="sf-line">18+ Roleplay Group</div>
   </div>
 </aside>
+
+<!-- YOUTUBE PLAYER (hidden) -->
+<div id="yt-player-wrap">
+  <div id="yt-player"></div>
+</div>
 
 <!-- MAIN CONTENT -->
 <main id="main">
@@ -139,7 +163,6 @@
     </div>
 
     <div class="content-grid-home">
-      <!-- Calendar -->
       <div class="home-left">
         <div class="panel">
           <div class="panel-emblem">
@@ -166,7 +189,6 @@
         </div>
       </div>
 
-      <!-- Notices -->
       <div class="home-right">
         <div class="notice-list" id="notice-list">
           <div class="notice-item pinned" onclick="openNotice('Welcome aboard The Somnian','The group is currently in its founding phase. Moderators are being selected and the opening event is being prepared. Watch this board for further transmissions. Applications are open for all who wish to join as Conductors.')">
@@ -203,7 +225,6 @@
           </div>
         </div>
 
-        <!-- Attendance / online members -->
         <div class="attendance-bar">
           <div class="att-label">
             <span class="att-title">CREW MANIFEST</span>
@@ -358,6 +379,106 @@
     <div id="member-detail-inner"></div>
   </div>
 
+  <!-- PAGE: MAKE YOUR CONSTRUCT -->
+  <div id="page-construct" class="page">
+    <div class="page-title-bar">
+      <div class="ptb-label">CONDUCTOR APPLICATIONS</div>
+      <div class="ptb-title">Make Your Construct</div>
+      <div class="ptb-sub">Read this template carefully before submitting your application via Discord. Completed applications go through the admin before character activation.</div>
+    </div>
+
+    <div class="app-layout">
+
+      <!-- PROFILE -->
+      <div class="app-block full">
+        <div class="block-label">PROFILE</div>
+        <div class="profile-grid">
+          <div class="field-row"><span class="field-key">_NAME</span><span class="field-val">Your character's full name</span></div>
+          <div class="field-row"><span class="field-key">_NICKNAME</span><span class="field-val">Your character's nickname</span></div>
+          <div class="field-row"><span class="field-key">_AGE</span><span class="field-val">Your character's age</span></div>
+          <div class="field-row"><span class="field-key">_PRONOUNS</span><span class="field-val">Preferred pronouns</span></div>
+          <div class="field-row"><span class="field-key">_HEIGHT</span><span class="field-val">Height</span></div>
+          <div class="field-row"><span class="field-key">_NATIONALITY</span><span class="field-val">Alpha · Omega · Lambda</span></div>
+          <div class="field-row"><span class="field-key">_FACTION</span>
+            <span class="field-val">
+              <span class="fate-c">Clotho</span> ·
+              <span class="fate-l">Lachesis</span> ·
+              <span class="fate-a">Atropos</span>
+            </span>
+          </div>
+          <div class="field-row"><span class="field-key">_SPECIALIZATION</span><span class="field-val">Your character's role aboard The Somnian</span></div>
+        </div>
+      </div>
+
+      <!-- WEAPON & SKILLS -->
+      <div class="app-block full">
+        <div class="block-label">WEAPON OF CHOICE</div>
+        <div class="field-row" style="margin-bottom:10px"><span class="field-key">_WEAPON NAME</span><span class="field-val">Name and brief description of weapon</span></div>
+        <div class="app-lore-text">Describe the weapon's appearance, origin, and any modifications. Constructs often carry weapons that were issued to them or salvaged from decommissioned chassis. If the weapon has a name or a history, include it here — weapons aboard The Somnian tend to outlast their owners.</div>
+        <div class="skill-entry">
+          <div class="skill-name"><span class="app-diamond">◇</span>Skill 1 — Short title</div>
+          <div class="skill-desc">Describe what this skill does mechanically and/or narratively. How does your Construct use it? What does it cost them?</div>
+        </div>
+        <div class="skill-entry">
+          <div class="skill-name"><span class="app-diamond">◇</span>Skill 2 — Short title</div>
+          <div class="skill-desc">You may include up to three skills. At least one should have a drawback or limitation — Constructs are not designed to be invincible.</div>
+        </div>
+        <div class="skill-entry">
+          <div class="skill-name"><span class="app-diamond">◇</span>Skill 3 — Short title</div>
+          <div class="skill-desc">Optional third skill.</div>
+        </div>
+      </div>
+
+      <!-- PERSONALITY -->
+      <div class="app-block full">
+        <div class="block-label">BIO — PERSONALITY</div>
+        <div class="app-trait-note">3 positive · 3 negative</div>
+        <div class="trait-row"><span class="trait-pos">◇ POS</span> Trait name — Short description of how this manifests in the character.</div>
+        <div class="trait-row"><span class="trait-pos">◇ POS</span> Trait name — Short description of how this manifests in the character.</div>
+        <div class="trait-row"><span class="trait-pos">◇ POS</span> Trait name — Short description of how this manifests in the character.</div>
+        <div class="trait-row"><span class="trait-neg">◇ NEG</span> Trait name — Short description of how this manifests in the character.</div>
+        <div class="trait-row"><span class="trait-neg">◇ NEG</span> Trait name — Short description of how this manifests in the character.</div>
+        <div class="trait-row"><span class="trait-neg">◇ NEG</span> Trait name — Short description of how this manifests in the character.</div>
+        <div class="personality-expand">Expand in a short paragraph. What is it like to be around this Construct? What do they project vs. what they actually are? You may write as much or as little as you feel does the character justice.</div>
+      </div>
+
+      <!-- HISTORY -->
+      <div class="app-block full">
+        <div class="block-label">BIO — HISTORY</div>
+        <div class="app-lore-text">
+          All Conductors aboard The Somnian have undergone a memory wipe prior to activation. What they remember is fragmentary — impressions, habits, skills without context, loyalties without clear origin.<br><br>
+          Write a brief account of your character's life <em>before</em> their latest wipe. What settlement did they come from? What was their function? What were they, before they became a Conductor?
+        </div>
+        <div class="app-secret-note">
+          <span class="app-secret-label">SECRET LORE</span>
+          Any information you want hidden from other players must be submitted separately and directly to the admin. Do not include it in the public application.
+        </div>
+        <div class="app-flavor-quote">The Somnian does not explain why it selected its Conductors. The Conductors have stopped asking.</div>
+      </div>
+
+      <!-- TRIVIA -->
+      <div class="app-block">
+        <div class="block-label">MISCELLANEOUS — TRIVIA</div>
+        <div class="trait-row"><span class="app-diamond">◇</span> Trivia point one</div>
+        <div class="trait-row"><span class="app-diamond">◇</span> Trivia point two</div>
+        <div class="trait-row"><span class="app-diamond">◇</span> Trivia point three</div>
+        <div class="trait-row"><span class="app-diamond">◇</span> Trivia point four</div>
+        <div class="trait-row"><span class="app-diamond">◇</span> Trivia point five</div>
+      </div>
+
+      <!-- OOC INFO -->
+      <div class="app-block">
+        <div class="block-label">MISCELLANEOUS — OOC INFO</div>
+        <div class="trait-row"><span class="app-diamond">◇</span> Mun handles (Discord, etc.)</div>
+        <div class="trait-row"><span class="app-diamond">◇</span> UTC/GMT timezone</div>
+        <div class="trait-row"><span class="app-diamond">◇</span> Writing style: Lit · Semi · Script</div>
+        <div class="trait-row"><span class="app-diamond">◇</span> Activity level (daily / a few times a week / weekends)</div>
+        <div class="trait-row"><span class="app-diamond">◇</span> Content boundaries (optional but encouraged)</div>
+      </div>
+
+    </div>
+  </div>
+
   <!-- PAGE: SYSTEM -->
   <div id="page-system" class="page">
     <div class="page-title-bar">
@@ -484,6 +605,34 @@
   </div>
 </div>
 
+<!-- ENTER OVERLAY -->
+<div id="enter-overlay">
+  <div id="enter-box">
+    <div id="enter-emblem">
+      <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="30" cy="30" r="28" stroke="#6b4e2a" stroke-width="0.8"/>
+        <circle cx="30" cy="30" r="20" stroke="#4a3520" stroke-width="0.5"/>
+        <circle cx="30" cy="30" r="12" stroke="#8a6a3a" stroke-width="0.5"/>
+        <circle cx="30" cy="30" r="4" fill="#8a6a3a" opacity="0.7"/>
+        <line x1="30" y1="2" x2="30" y2="10" stroke="#6b4e2a" stroke-width="0.8"/>
+        <line x1="30" y1="50" x2="30" y2="58" stroke="#6b4e2a" stroke-width="0.8"/>
+        <line x1="2" y1="30" x2="10" y2="30" stroke="#6b4e2a" stroke-width="0.8"/>
+        <line x1="50" y1="30" x2="58" y2="30" stroke="#6b4e2a" stroke-width="0.8"/>
+        <polygon points="30,18 32,26 30,24 28,26" fill="#8a6a3a" opacity="0.6"/>
+        <polygon points="30,42 32,34 30,36 28,34" fill="#8a6a3a" opacity="0.6"/>
+      </svg>
+    </div>
+    <div id="enter-title">NULL MERIDIAN</div>
+    <div id="enter-sub">a story in the end of everything</div>
+    <button id="enter-btn" onclick="enterSite()">
+      <span>BOARD THE SOMNIAN</span>
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+    </button>
+    <div id="enter-note">18+ · Original Roleplay · Music enabled</div>
+  </div>
+</div>
+
 <script src="script.js"></script>
+<script src="https://www.youtube.com/iframe_api"></script>
 </body>
 </html>
