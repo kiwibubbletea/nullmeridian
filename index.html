@@ -489,27 +489,76 @@
     </div>
     <div class="anomaly-layout">
       <div class="anomaly-map" id="anomaly-map">
-        <canvas id="map-canvas" width="600" height="400"></canvas>
-        <div class="map-point" style="left:48%;top:42%" onclick="openMapPoint('somnian-route')">
-          <div class="mp-dot"></div>
-          <div class="mp-label">Somnian Route</div>
-        </div>
-        <div class="map-point" style="left:20%;top:30%" onclick="openMapPoint('lambda')">
+        <canvas id="map-canvas" width="900" height="520"></canvas>
+
+        <!-- Settlements -->
+        <div class="map-point" style="left:14%;top:22%" onclick="openMapPoint('lambda')">
           <div class="mp-dot"></div>
           <div class="mp-label">Lambda</div>
         </div>
-        <div class="map-point" style="left:75%;top:25%" onclick="openMapPoint('omega')">
+        <div class="map-point" style="left:72%;top:18%" onclick="openMapPoint('omega')">
           <div class="mp-dot"></div>
           <div class="mp-label">Omega</div>
         </div>
-        <div class="map-point" style="left:60%;top:70%" onclick="openMapPoint('alpha')">
+        <div class="map-point" style="left:62%;top:74%" onclick="openMapPoint('alpha')">
           <div class="mp-dot"></div>
           <div class="mp-label">Alpha</div>
+        </div>
+
+        <!-- Train route -->
+        <div class="map-point here" style="left:43%;top:46%" onclick="openMapPoint('somnian-route')">
+          <div class="here-tooltip">✦ YOU ARE HERE</div>
+          <div class="mp-dot"></div>
+          <div class="mp-label">The Somnian</div>
+        </div>
+
+        <!-- Unknown mystery points — ice zone -->
+        <div class="map-point unknown" style="left:5%;top:12%" onclick="openMapPoint('unknown-1')">
+          <div class="mp-dot"></div>
+          <div class="mp-label">???</div>
+        </div>
+        <div class="map-point unknown" style="left:28%;top:10%" onclick="openMapPoint('unknown-2')">
+          <div class="mp-dot"></div>
+          <div class="mp-label">???</div>
+        </div>
+        <div class="map-point unknown" style="left:8%;top:35%" onclick="openMapPoint('unknown-3')">
+          <div class="mp-dot"></div>
+          <div class="mp-label">???</div>
+        </div>
+        <!-- Unknown mystery points — anomaly zone -->
+        <div class="map-point unknown" style="left:55%;top:42%" onclick="openMapPoint('unknown-4')">
+          <div class="mp-dot"></div>
+          <div class="mp-label">???</div>
+        </div>
+        <div class="map-point unknown" style="left:30%;top:52%" onclick="openMapPoint('unknown-5')">
+          <div class="mp-dot"></div>
+          <div class="mp-label">???</div>
+        </div>
+        <!-- Unknown mystery points — desert zone -->
+        <div class="map-point unknown" style="left:88%;top:62%" onclick="openMapPoint('unknown-6')">
+          <div class="mp-dot"></div>
+          <div class="mp-label">???</div>
+        </div>
+        <div class="map-point unknown" style="left:40%;top:82%" onclick="openMapPoint('unknown-7')">
+          <div class="mp-dot"></div>
+          <div class="mp-label">???</div>
+        </div>
+        <div class="map-point unknown" style="left:78%;top:85%" onclick="openMapPoint('unknown-8')">
+          <div class="mp-dot"></div>
+          <div class="mp-label">???</div>
         </div>
       </div>
       <div class="anomaly-info" id="anomaly-info">
         <div class="ai-title">SELECT A LOCATION</div>
         <div class="ai-body">Click on any point on the map to learn more about that location.</div>
+        <div class="zone-legend">
+          <div class="zl-row"><div class="zl-dot here"></div> You are here (The Somnian)</div>
+          <div class="zl-row"><div class="zl-dot settlement"></div> Settlement</div>
+          <div class="zl-row"><div class="zl-dot ice"></div> Frozen Wastes (North)</div>
+          <div class="zl-row"><div class="zl-dot desert"></div> Scorched Desert (South)</div>
+          <div class="zl-row"><div class="zl-dot anomaly"></div> Anomaly Zone (Center)</div>
+          <div class="zl-row"><div class="zl-dot unknown"></div> Unknown — Uncharted</div>
+        </div>
       </div>
     </div>
   </div>

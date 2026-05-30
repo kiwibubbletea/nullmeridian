@@ -182,7 +182,7 @@ function filterFate(fate, btn) {
 // ===== ANOMALY MAP =====
 const mapPoints = {
   'somnian-route': {
-    title: 'Somnian Transit Route',
+    title: 'The Somnian — Current Position',
     body: 'The only path through the Anomaly Zone\'s edge. The Conductors know the margin between safe passage and Zone corruption is thinner than passengers understand. The route narrows every month as the Zone expands.'
   },
   'lambda': {
@@ -196,6 +196,38 @@ const mapPoints = {
   'alpha': {
     title: 'Alpha — The Deep',
     body: 'Desert-side mining complex. Hot, loud, running on inertia. Vantablack Industrial has not sent a representative in over a decade. Constructs are tools here, not cruelly, just with the complete absence of any framework that would permit a different view.'
+  },
+  'unknown-1': {
+    title: '??? — Uncharted Territory',
+    body: 'Deep frozen wastes. Survey drones sent into this region returned corrupted data. One did not return at all. Lambda\'s Cultivation Council has not authorized further investigation.'
+  },
+  'unknown-2': {
+    title: '??? — Signal Anomaly',
+    body: 'Omega\'s receivers occasionally pick up a frequency originating from this direction. The signal does not match any known transmission format. It repeats on a 17-day cycle.'
+  },
+  'unknown-3': {
+    title: '??? — Collapsed Infrastructure',
+    body: 'Pre-collapse maps indicate a settlement in this region. No contact has been established. The area is classified as uninhabitable. The classification predates the current administration.'
+  },
+  'unknown-4': {
+    title: '??? — Zone Anomaly Cluster',
+    body: 'This region is where the Anomaly Zone behaves most unpredictably. Gravity inversions lasting up to 40 minutes have been recorded here. Constructs who survived passage reported memory gaps.'
+  },
+  'unknown-5': {
+    title: '??? — Uncharted Zone Interior',
+    body: 'The Somnian has not passed through this region. What the Zone does to biological passengers in its interior — as opposed to its edge — is theoretical. The Conductors prefer it remains theoretical.'
+  },
+  'unknown-6': {
+    title: '??? — Deep Desert',
+    body: 'Past the known perimeter of the scorched zone. Surface temperature measurements from this region were last recorded twelve years ago. The instruments that took them were subsequently decommissioned for unexplained data corruption.'
+  },
+  'unknown-7': {
+    title: '??? — Southern Anomaly Edge',
+    body: 'The Zone\'s southern boundary is expanding at seven centimeters per day. At current rate, this area will be consumed in approximately four years. No evacuation planning has been publicly discussed.'
+  },
+  'unknown-8': {
+    title: '??? — Vantablack Perimeter',
+    body: 'This region falls within the last known operational boundary of Vantablack Industrial\'s original operations. What they were doing here — and why they stopped communicating — remains undisclosed.'
   }
 };
 
@@ -213,62 +245,195 @@ function initMapCanvas() {
   const W = canvas.width, H = canvas.height;
   ctx.clearRect(0, 0, W, H);
 
-  const grad = ctx.createLinearGradient(0, 0, 0, H);
-  grad.addColorStop(0,    '#0c0f14');
-  grad.addColorStop(0.35, '#0e1018');
-  grad.addColorStop(0.45, '#1a0e08');
-  grad.addColorStop(0.55, '#1a0e08');
-  grad.addColorStop(0.65, '#130c08');
-  grad.addColorStop(1,    '#100a06');
-  ctx.fillStyle = grad;
-  ctx.fillRect(0, 0, W, H);
+  // === ZONE BACKGROUNDS ===
+  // Top third: frozen wastes — deep blue-black
+  const iceGrad = ctx.createLinearGradient(0, 0, 0, H * 0.38);
+  iceGrad.addColorStop(0,   '#07101e');
+  iceGrad.addColorStop(0.6, '#0b1420');
+  iceGrad.addColorStop(1,   '#0d1624');
+  ctx.fillStyle = iceGrad;
+  ctx.fillRect(0, 0, W, H * 0.38);
 
-  const zoneGrad = ctx.createLinearGradient(0, H * 0.38, 0, H * 0.62);
-  zoneGrad.addColorStop(0, 'rgba(80,40,100,0)');
-  zoneGrad.addColorStop(0.5, 'rgba(80,40,100,0.15)');
-  zoneGrad.addColorStop(1, 'rgba(80,40,100,0)');
-  ctx.fillStyle = zoneGrad;
+  // Middle: anomaly zone — dark purple
+  const anomGrad = ctx.createLinearGradient(0, H * 0.35, 0, H * 0.65);
+  anomGrad.addColorStop(0,   '#0d0814');
+  anomGrad.addColorStop(0.5, '#120a1c');
+  anomGrad.addColorStop(1,   '#0d0814');
+  ctx.fillStyle = anomGrad;
+  ctx.fillRect(0, H * 0.35, W, H * 0.30);
+
+  // Bottom third: desert — warm dark orange-brown
+  const desertGrad = ctx.createLinearGradient(0, H * 0.62, 0, H);
+  desertGrad.addColorStop(0,   '#1a0e06');
+  desertGrad.addColorStop(0.5, '#1e1008');
+  desertGrad.addColorStop(1,   '#160c05');
+  ctx.fillStyle = desertGrad;
+  ctx.fillRect(0, H * 0.62, W, H * 0.38);
+
+  // === ZONE GLOW BANDS (blended transitions) ===
+  // Ice zone blue tint
+  const iceGlow = ctx.createLinearGradient(0, 0, 0, H * 0.42);
+  iceGlow.addColorStop(0,    'rgba(60,110,180,0.12)');
+  iceGlow.addColorStop(0.7,  'rgba(60,110,180,0.04)');
+  iceGlow.addColorStop(1,    'transparent');
+  ctx.fillStyle = iceGlow;
+  ctx.fillRect(0, 0, W, H * 0.42);
+
+  // Desert orange tint
+  const desGlow = ctx.createLinearGradient(0, H * 0.58, 0, H);
+  desGlow.addColorStop(0,    'transparent');
+  desGlow.addColorStop(0.3,  'rgba(160,80,30,0.06)');
+  desGlow.addColorStop(1,    'rgba(180,90,30,0.14)');
+  ctx.fillStyle = desGlow;
+  ctx.fillRect(0, H * 0.58, W, H * 0.42);
+
+  // Anomaly zone purple shimmer
+  const anomGlow = ctx.createLinearGradient(0, H * 0.38, 0, H * 0.62);
+  anomGlow.addColorStop(0,   'transparent');
+  anomGlow.addColorStop(0.5, 'rgba(100,40,160,0.18)');
+  anomGlow.addColorStop(1,   'transparent');
+  ctx.fillStyle = anomGlow;
   ctx.fillRect(0, H * 0.38, W, H * 0.24);
 
-  ctx.strokeStyle = 'rgba(120,150,180,0.06)';
-  ctx.lineWidth = 0.5;
-  for (let i = 0; i < 20; i++) {
-    const y = Math.random() * H * 0.45;
-    ctx.beginPath();
-    ctx.moveTo(0, y);
-    ctx.lineTo(W, y + (Math.random() - 0.5) * 30);
-    ctx.stroke();
-  }
+  // === ZONE LABEL AREAS (thin horizontal color bars) ===
+  // Ice zone top border
+  ctx.fillStyle = 'rgba(60,110,200,0.15)';
+  ctx.fillRect(0, 0, W, 2);
 
-  ctx.strokeStyle = 'rgba(160,100,50,0.06)';
-  for (let i = 0; i < 12; i++) {
-    const y = H * 0.55 + Math.random() * H * 0.4;
+  // Desert bottom border
+  ctx.fillStyle = 'rgba(180,90,30,0.2)';
+  ctx.fillRect(0, H - 2, W, 2);
+
+  // === ZONE SEPARATOR LINES ===
+  ctx.strokeStyle = 'rgba(100,40,160,0.2)';
+  ctx.lineWidth = 1;
+  ctx.setLineDash([8, 6]);
+  ctx.beginPath(); ctx.moveTo(0, H * 0.38); ctx.lineTo(W, H * 0.38); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(0, H * 0.62); ctx.lineTo(W, H * 0.62); ctx.stroke();
+  ctx.setLineDash([]);
+
+  // === ICE ZONE TEXTURES ===
+  // Ice cracks / horizontal striations
+  ctx.strokeStyle = 'rgba(130,160,210,0.05)';
+  ctx.lineWidth = 0.5;
+  for (let i = 0; i < 28; i++) {
+    const y = (i / 28) * H * 0.36;
     ctx.beginPath();
     ctx.moveTo(0, y);
-    for (let x = 0; x <= W; x += 40) {
-      ctx.lineTo(x, y + Math.sin(x * 0.02 + i) * 8);
+    let x = 0;
+    while (x < W) {
+      x += 20 + Math.random() * 40;
+      ctx.lineTo(x, y + (Math.random() - 0.5) * 12);
     }
     ctx.stroke();
   }
+  // Frozen mountain silhouettes
+  ctx.fillStyle = 'rgba(80,120,180,0.07)';
+  for (let i = 0; i < 10; i++) {
+    const mx = (i / 9) * W * 1.1 - W * 0.05;
+    const mh = 60 + Math.random() * 80;
+    const mw = 80 + Math.random() * 100;
+    ctx.beginPath();
+    ctx.moveTo(mx - mw/2, H * 0.37);
+    ctx.lineTo(mx, H * 0.37 - mh);
+    ctx.lineTo(mx + mw/2, H * 0.37);
+    ctx.closePath();
+    ctx.fill();
+    // snow cap
+    ctx.fillStyle = 'rgba(200,220,255,0.06)';
+    ctx.beginPath();
+    ctx.moveTo(mx - mw*0.12, H * 0.37 - mh * 0.75);
+    ctx.lineTo(mx, H * 0.37 - mh);
+    ctx.lineTo(mx + mw*0.12, H * 0.37 - mh * 0.75);
+    ctx.closePath();
+    ctx.fill();
+    ctx.fillStyle = 'rgba(80,120,180,0.07)';
+  }
 
-  ctx.strokeStyle = 'rgba(184,146,58,0.05)';
+  // === DESERT ZONE TEXTURES ===
+  // Dune ripple lines
+  ctx.strokeStyle = 'rgba(180,110,50,0.06)';
+  ctx.lineWidth = 0.6;
+  for (let i = 0; i < 16; i++) {
+    const y = H * 0.65 + (i / 15) * H * 0.32;
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    for (let x = 0; x <= W; x += 25) {
+      ctx.lineTo(x, y + Math.sin(x * 0.015 + i * 0.8) * 10);
+    }
+    ctx.stroke();
+  }
+  // Dune mounds
+  for (let i = 0; i < 6; i++) {
+    const dx = (i / 5) * W * 1.1 - W * 0.05;
+    const dw = 150 + Math.random() * 120;
+    const dh = 30 + Math.random() * 50;
+    ctx.beginPath();
+    ctx.ellipse(dx, H * 0.63, dw/2, dh * 0.5, 0, Math.PI, 0);
+    ctx.fillStyle = 'rgba(160,90,40,0.07)';
+    ctx.fill();
+  }
+
+  // === ANOMALY ZONE TEXTURES ===
+  // Glitch/warp lines
+  ctx.strokeStyle = 'rgba(140,60,200,0.07)';
+  ctx.lineWidth = 0.8;
+  for (let i = 0; i < 12; i++) {
+    const y = H * 0.40 + (i / 11) * H * 0.20;
+    ctx.beginPath();
+    ctx.moveTo(0, y);
+    for (let x = 0; x <= W; x += 15) {
+      ctx.lineTo(x, y + (Math.random() - 0.5) * 20);
+    }
+    ctx.stroke();
+  }
+  // Floating anomaly orbs
+  for (let i = 0; i < 8; i++) {
+    const ax = (i / 7) * W;
+    const ay = H * 0.42 + Math.random() * H * 0.16;
+    const ar = 6 + Math.random() * 14;
+    const ag = ctx.createRadialGradient(ax, ay, 0, ax, ay, ar);
+    ag.addColorStop(0, 'rgba(160,80,220,0.12)');
+    ag.addColorStop(1, 'transparent');
+    ctx.beginPath();
+    ctx.arc(ax, ay, ar, 0, Math.PI * 2);
+    ctx.fillStyle = ag;
+    ctx.fill();
+  }
+
+  // === GRID OVERLAY ===
+  ctx.strokeStyle = 'rgba(184,146,58,0.04)';
   ctx.lineWidth = 0.3;
-  for (let x = 0; x <= W; x += 40) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
-  for (let y = 0; y <= H; y += 40) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+  for (let x = 0; x <= W; x += 50) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
+  for (let y = 0; y <= H; y += 50) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
 
-  ctx.font = '10px Cinzel, serif';
-  ctx.fillStyle = 'rgba(160,100,180,0.3)';
-  ctx.fillText('ANOMALY ZONE', W * 0.4, H * 0.51);
+  // === ZONE LABELS ===
+  ctx.save();
+  ctx.font = 'bold 11px Cinzel, serif';
+  ctx.letterSpacing = '0.3em';
+  ctx.fillStyle = 'rgba(100,150,220,0.25)';
+  ctx.fillText('FROZEN WASTES', 18, 22);
+  ctx.fillStyle = 'rgba(160,80,220,0.28)';
+  ctx.fillText('ANOMALY  ZONE', W * 0.38, H * 0.51);
+  ctx.fillStyle = 'rgba(180,110,50,0.28)';
+  ctx.fillText('SCORCHED DESERT', 18, H - 14);
+  ctx.restore();
 
-  ctx.strokeStyle = 'rgba(184,146,58,0.3)';
-  ctx.lineWidth = 1;
-  ctx.setLineDash([6, 4]);
+  // === TRAIN ROUTE (dashed gold line) ===
+  ctx.strokeStyle = 'rgba(184,146,58,0.35)';
+  ctx.lineWidth = 1.5;
+  ctx.setLineDash([8, 5]);
   ctx.beginPath();
-  ctx.moveTo(W * 0.20, H * 0.30);
-  ctx.bezierCurveTo(W * 0.35, H * 0.42, W * 0.60, H * 0.42, W * 0.75, H * 0.25);
+  ctx.moveTo(W * 0.14, H * 0.22);
+  ctx.bezierCurveTo(W * 0.25, H * 0.40, W * 0.38, H * 0.50, W * 0.43, H * 0.46);
+  ctx.bezierCurveTo(W * 0.50, H * 0.40, W * 0.62, H * 0.32, W * 0.72, H * 0.18);
   ctx.stroke();
-  ctx.moveTo(W * 0.48, H * 0.42);
-  ctx.lineTo(W * 0.60, H * 0.70);
+  // Branch to Alpha
+  ctx.strokeStyle = 'rgba(184,146,58,0.2)';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(W * 0.43, H * 0.46);
+  ctx.bezierCurveTo(W * 0.50, H * 0.58, W * 0.56, H * 0.65, W * 0.62, H * 0.74);
   ctx.stroke();
   ctx.setLineDash([]);
 }
