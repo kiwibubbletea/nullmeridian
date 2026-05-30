@@ -1,78 +1,37 @@
-/* ==========================================================================
+/* ===========================
    NULL MERIDIAN — STYLESHEET
-   ==========================================================================
+   RETRO / ART DECO EDITION
+   =========================== */
 
-   TABLE OF CONTENTS
-   -----------------
-   1.  CSS VARIABLES (colours, fonts, layout constants)
-   2.  RESET & BASE
-   3.  BACKGROUND CANVAS
-   4.  SIDEBAR
-       4a. Logo
-       4b. Navigation
-       4c. Music bar
-       4d. Footer
-   5.  TOP BAR
-   6.  MAIN CONTENT AREA
-   7.  PAGE SYSTEM (shared page wrapper + entrance animation)
-   8.  PAGE: NOTICE / HOME
-       8a. Banner
-       8b. Left panel + calendar
-       8c. Notice list
-       8d. Attendance bar
-   9.  PAGE: WORLD OVERVIEW
-   10. PAGE: SETTLEMENTS
-   11. PAGE: ANOMALY ZONE (map + info panel)
-   12. PAGE: THE FATES
-   13. PAGE: DREAM CORE
-   14. PAGE: MEMBERS (grid + fate filter)
-   15. PAGE: MEMBER DETAIL
-   16. PAGE: MAKE YOUR CONSTRUCT (application template)
-   17. PAGE: SYSTEM
-   18. NOTICE MODAL
-   19. ENTER OVERLAY
-   20. MUSIC BAR (YouTube player controls in sidebar)
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inconsolata:wght@300;400;500&family=IM+Fell+English:ital@0;1&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=UnifrakturMaguntia&family=Cinzel:wght@400;700;900&display=swap');
 
-   ========================================================================== */
-
-
-/* ==========================================================================
-   1. CSS VARIABLES
-   ========================================================================== */
 :root {
-  /* Backgrounds */
-  --bg:          #0a0907;
-  --bg2:         #110f0c;
-  --bg3:         #181410;
-
-  /* Borders */
+  --bg:          #080806;
+  --bg2:         #0e0d0a;
+  --bg3:         #141210;
+  --bg4:         #1a1815;
   --border:      #2a2018;
   --border2:     #3a2e20;
-
-  /* Gold palette */
-  --gold:        #8a6a3a;
-  --gold2:       #c0924a;
-  --gold-dim:    #4a3520;
-
-  /* Text */
-  --text:        #b0a090;
-  --text-dim:    #6a5a4a;
-  --text-bright: #d0c0a0;
-
-  /* Faction colours */
-  --clotho:      #6080a0;
-  --lachesis:    #60a080;
-  --atropos:     #a06070;
-
-  /* Layout */
-  --sidebar-w:   240px;
-  --topbar-h:    52px;
+  --border3:     #4a3a28;
+  --gold:        #b8923a;
+  --gold2:       #d4a84a;
+  --gold3:       #e8c870;
+  --gold-dim:    #5a4228;
+  --gold-pale:   #c8a860;
+  --cream:       #f0e8d8;
+  --text:        #c8baa8;
+  --text-dim:    #7a6a58;
+  --text-bright: #e8dcc8;
+  --text-muted:  #4a3e30;
+  --white:       #f4ede0;
+  --black:       #050403;
+  --clotho:      #7090b8;
+  --lachesis:    #70b890;
+  --atropos:     #b87080;
+  --sidebar-w:   250px;
+  --topbar-h:    54px;
 }
 
-
-/* ==========================================================================
-   2. RESET & BASE
-   ========================================================================== */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { height: 100%; overflow: hidden; }
 
@@ -80,13 +39,23 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 14px;
   display: flex;
 }
 
+/* ===== GRAIN OVERLAY ===== */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+}
 
-/* ==========================================================================
-   3. BACKGROUND CANVAS
-   ========================================================================== */
+/* ===== BACKGROUND CANVAS ===== */
 #bg-canvas {
   position: fixed;
   inset: 0;
@@ -98,20 +67,50 @@ body {
   inset: 0;
   z-index: 1;
   background:
-    radial-gradient(ellipse at 30% 50%, rgba(10,8,5,0.4) 0%, transparent 60%),
-    radial-gradient(ellipse at 70% 50%, rgba(10,8,5,0.4) 0%, transparent 60%);
+    radial-gradient(ellipse at 30% 50%, rgba(8,7,5,0.5) 0%, transparent 60%),
+    radial-gradient(ellipse at 70% 50%, rgba(8,7,5,0.5) 0%, transparent 60%);
   pointer-events: none;
 }
 
+/* ===== DECORATIVE SVG SHAPES (global floating) ===== */
+.deco-star-4 {
+  display: inline-block;
+  width: 1em; height: 1em;
+  background: var(--gold);
+  clip-path: polygon(50% 0%, 55% 45%, 100% 50%, 55% 55%, 50% 100%, 45% 55%, 0% 50%, 45% 45%);
+}
+.deco-cross {
+  display: inline-block;
+  position: relative;
+  width: 10px; height: 10px;
+  color: var(--gold-dim);
+}
+.deco-cross::before, .deco-cross::after {
+  content: '';
+  position: absolute;
+  background: currentColor;
+}
+.deco-cross::before { width: 100%; height: 1px; top: 50%; left: 0; transform: translateY(-50%); }
+.deco-cross::after  { width: 1px; height: 100%; left: 50%; top: 0; transform: translateX(-50%); }
 
-/* ==========================================================================
-   4. SIDEBAR
-   ========================================================================== */
+/* Corner ornament shared class */
+.corner-tl, .corner-tr, .corner-bl, .corner-br {
+  position: absolute;
+  width: 28px; height: 28px;
+  pointer-events: none;
+  opacity: 0.5;
+}
+.corner-tl { top: 8px; left: 8px; border-top: 1px solid var(--gold-dim); border-left: 1px solid var(--gold-dim); }
+.corner-tr { top: 8px; right: 8px; border-top: 1px solid var(--gold-dim); border-right: 1px solid var(--gold-dim); }
+.corner-bl { bottom: 8px; left: 8px; border-bottom: 1px solid var(--gold-dim); border-left: 1px solid var(--gold-dim); }
+.corner-br { bottom: 8px; right: 8px; border-bottom: 1px solid var(--gold-dim); border-right: 1px solid var(--gold-dim); }
+
+/* ===== SIDEBAR ===== */
 #sidebar {
   position: fixed;
   left: 0; top: 0; bottom: 0;
   width: var(--sidebar-w);
-  background: rgba(10, 9, 7, 0.92);
+  background: rgba(6, 5, 4, 0.96);
   border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
@@ -119,18 +118,87 @@ body {
   overflow-y: auto;
   scrollbar-width: none;
 }
+#sidebar::after {
+  content: '';
+  position: absolute;
+  top: 0; right: -1px;
+  width: 1px; height: 100%;
+  background: linear-gradient(to bottom, transparent, var(--gold-dim) 30%, var(--gold-dim) 70%, transparent);
+  pointer-events: none;
+}
 #sidebar::-webkit-scrollbar { display: none; }
 
-/* 4a. Logo ---------------------------------------------------------------- */
+/* Sidebar decorative lines */
+#sidebar::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 4px;
+  width: 1px; height: 100%;
+  background: linear-gradient(to bottom, transparent, rgba(90,66,40,0.2) 20%, rgba(90,66,40,0.2) 80%, transparent);
+  pointer-events: none;
+}
+
+/* Logo */
 #logo-area {
-  padding: 24px 20px 20px;
+  padding: 28px 22px 22px;
   border-bottom: 1px solid var(--border);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
+  position: relative;
 }
-#logo-emblem svg { width: 48px; height: 48px; }
+#logo-area::before {
+  content: '✦';
+  position: absolute;
+  top: 8px; left: 50%;
+  transform: translateX(-50%);
+  font-size: 8px;
+  color: var(--gold-dim);
+  letter-spacing: 0;
+}
+
+/* Cross cluster top of logo */
+.logo-cross-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: -4px;
+}
+.logo-cross-sm {
+  width: 8px; height: 8px;
+  position: relative;
+  opacity: 0.35;
+}
+.logo-cross-sm::before, .logo-cross-sm::after {
+  content: '';
+  position: absolute;
+  background: var(--gold);
+}
+.logo-cross-sm::before { width: 100%; height: 1px; top: 50%; left: 0; transform: translateY(-50%); }
+.logo-cross-sm::after { width: 1px; height: 100%; left: 50%; top: 0; transform: translateX(-50%); }
+
+#logo-emblem { position: relative; }
+#logo-emblem svg { width: 52px; height: 52px; }
+
+/* 4-pointed star beside emblem */
+.logo-star-4 {
+  position: absolute;
+  top: -6px; right: -14px;
+  width: 10px; height: 10px;
+  background: var(--gold);
+  clip-path: polygon(50% 0%, 56% 44%, 100% 50%, 56% 56%, 50% 100%, 44% 56%, 0% 50%, 44% 44%);
+  opacity: 0.6;
+}
+.logo-star-4-sm {
+  position: absolute;
+  bottom: 0px; left: -10px;
+  width: 6px; height: 6px;
+  background: var(--gold-dim);
+  clip-path: polygon(50% 0%, 56% 44%, 100% 50%, 56% 56%, 50% 100%, 44% 56%, 0% 50%, 44% 44%);
+  opacity: 0.5;
+}
+
 #logo-text {
   display: flex;
   flex-direction: column;
@@ -140,27 +208,28 @@ body {
 .logo-sub {
   font-family: 'Inconsolata', monospace;
   font-size: 9px;
-  letter-spacing: 0.4em;
+  letter-spacing: 0.5em;
   color: var(--gold-dim);
 }
 .logo-main {
-  font-family: 'IM Fell English', serif;
-  font-size: 22px;
+  font-family: 'Cinzel', serif;
+  font-size: 20px;
+  font-weight: 700;
   color: var(--gold2);
-  letter-spacing: 0.15em;
+  letter-spacing: 0.18em;
+  text-shadow: 0 0 20px rgba(184,146,58,0.25);
 }
 .logo-tagline {
-  font-family: 'Inconsolata', monospace;
-  font-size: 8px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 10px;
   color: var(--text-dim);
   letter-spacing: 0.1em;
   font-style: italic;
 }
 
-/* 4b. Navigation ---------------------------------------------------------- */
-#sidebar-nav { flex: 1; padding: 16px 0; }
-
-.nav-section { margin-bottom: 4px; }
+/* Nav */
+#sidebar-nav { flex: 1; padding: 14px 0; }
+.nav-section { margin-bottom: 2px; }
 
 .nav-section-header {
   display: flex;
@@ -170,100 +239,127 @@ body {
   cursor: pointer;
   transition: background 0.2s;
 }
-.nav-section-header:hover { background: rgba(138,106,58,0.06); }
+.nav-section-header:hover { background: rgba(184,146,58,0.05); }
 
 .nav-diamond {
   color: var(--gold);
-  font-size: 14px;
-  width: 16px;
+  font-size: 10px;
+  width: 14px;
   text-align: center;
   flex-shrink: 0;
 }
 .nav-section-title {
-  font-family: 'Inconsolata', monospace;
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.2em;
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.22em;
   color: var(--gold2);
   cursor: pointer;
+  transition: color 0.2s;
 }
-.nav-sub {
-  padding: 0 0 4px 44px;
-  display: none;
-}
+.nav-section-header:hover .nav-section-title { color: var(--gold3); }
+
+.nav-sub { padding: 0 0 6px 42px; display: none; }
 .nav-sub.open { display: block; }
+
 .nav-link {
   display: block;
   padding: 5px 0;
   font-family: 'Inconsolata', monospace;
   font-size: 11px;
-  color: var(--text-dim);
+  color: var(--text-muted);
   cursor: pointer;
   transition: color 0.2s;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
 }
 .nav-link:hover { color: var(--gold); }
 
-/* 4c. Music bar ----------------------------------------------------------- */
-/* (full styles in section 20) */
-
-/* 4d. Footer -------------------------------------------------------------- */
+/* Sidebar footer */
 #sidebar-footer {
   padding: 14px 20px;
   border-top: 1px solid var(--border);
+  text-align: center;
 }
 .sf-line {
   font-family: 'Inconsolata', monospace;
   font-size: 9px;
-  color: var(--text-dim);
-  letter-spacing: 0.1em;
-  line-height: 1.8;
-  opacity: 0.5;
+  color: var(--text-muted);
+  letter-spacing: 0.12em;
+  line-height: 1.9;
+  opacity: 0.45;
 }
 
-
-/* ==========================================================================
-   5. TOP BAR
-   ========================================================================== */
+/* ===== TOPBAR ===== */
 #topbar {
   position: fixed;
   left: var(--sidebar-w);
   right: 0;
   top: 0;
   height: var(--topbar-h);
-  background: rgba(10,9,7,0.85);
+  background: rgba(8,7,5,0.92);
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 28px;
+  padding: 0 32px;
   z-index: 90;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(6px);
+}
+/* Thin gold line below topbar */
+#topbar::after {
+  content: '';
+  position: absolute;
+  bottom: -1px; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--gold-dim) 20%, var(--gold-dim) 80%, transparent);
 }
 #page-breadcrumb {
-  font-family: 'Inconsolata', monospace;
-  font-size: 11px;
-  letter-spacing: 0.3em;
-  color: var(--text-dim);
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  letter-spacing: 0.35em;
+  color: var(--text-muted);
 }
-#topbar-icons { display: flex; gap: 4px; }
+/* Topbar center ornament */
+.topbar-ornament {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  opacity: 0.25;
+  pointer-events: none;
+}
+.topbar-cross {
+  width: 7px; height: 7px; position: relative;
+}
+.topbar-cross::before, .topbar-cross::after {
+  content: ''; position: absolute; background: var(--gold);
+}
+.topbar-cross::before { width: 100%; height: 1px; top: 50%; left: 0; transform: translateY(-50%); }
+.topbar-cross::after { width: 1px; height: 100%; left: 50%; top: 0; transform: translateX(-50%); }
+.topbar-line { width: 40px; height: 1px; background: var(--gold-dim); }
+
+#topbar-icons { display: flex; gap: 6px; }
 .topbar-icon {
-  width: 36px; height: 36px;
+  width: 34px; height: 34px;
   background: none;
-  border: 1px solid var(--border);
-  border-radius: 4px;
+  border: 1px solid var(--border2);
+  border-radius: 2px;
   color: var(--text-dim);
   cursor: pointer;
   display: flex; align-items: center; justify-content: center;
   transition: all 0.2s;
+  position: relative;
 }
-.topbar-icon svg { width: 16px; height: 16px; }
-.topbar-icon:hover { border-color: var(--gold-dim); color: var(--gold); }
+.topbar-icon svg { width: 15px; height: 15px; }
+.topbar-icon:hover {
+  border-color: var(--gold-dim);
+  color: var(--gold);
+  background: rgba(184,146,58,0.05);
+}
 
-
-/* ==========================================================================
-   6. MAIN CONTENT AREA
-   ========================================================================== */
+/* ===== MAIN ===== */
 #main {
   margin-left: var(--sidebar-w);
   margin-top: var(--topbar-h);
@@ -278,178 +374,221 @@ body {
 #main::-webkit-scrollbar-track { background: transparent; }
 #main::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
 
-
-/* ==========================================================================
-   7. PAGE SYSTEM
-   ========================================================================== */
-.page { display: none; padding: 28px 32px; animation: pagein 0.4s ease; }
+/* ===== PAGES ===== */
+.page { display: none; padding: 32px 36px; animation: pagein 0.45s ease; }
 .page.active { display: block; }
-
 @keyframes pagein {
-  from { opacity: 0; transform: translateY(8px); }
+  from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* Shared page title bar used on most pages */
-.page-title-bar {
-  margin-bottom: 28px;
-  border-bottom: 1px solid var(--border);
-  padding-bottom: 14px;
+/* ===== SECTION DIVIDER ORNAMENT ===== */
+.ornament-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0;
+  opacity: 0.35;
 }
-.ptb-label {
-  font-family: 'Inconsolata', monospace;
-  font-size: 10px;
-  letter-spacing: 0.3em;
-  color: var(--gold-dim);
-  margin-bottom: 4px;
-}
-.ptb-title {
-  font-family: 'IM Fell English', serif;
-  font-size: 30px;
-  color: var(--text-bright);
-  letter-spacing: 0.04em;
-}
-.ptb-sub {
-  font-family: 'Inconsolata', monospace;
-  font-size: 11px;
-  color: var(--text-dim);
-  font-style: italic;
-  letter-spacing: 0.05em;
-  margin-top: 6px;
-}
+.ornament-row .line { flex: 1; height: 1px; background: var(--gold-dim); }
+.ornament-row .diamond { color: var(--gold); font-size: 10px; }
 
-
-/* ==========================================================================
-   8. PAGE: NOTICE / HOME
-   ========================================================================== */
-
-/* 8a. Banner -------------------------------------------------------------- */
-.banner-area { margin-bottom: 24px; }
+/* ===== HOME / NOTICE ===== */
+.banner-area { margin-bottom: 26px; position: relative; }
 .banner-card {
-  background: linear-gradient(135deg, var(--bg2) 0%, #1a1510 50%, var(--bg2) 100%);
+  background: linear-gradient(135deg, var(--bg2) 0%, #18140e 50%, var(--bg2) 100%);
   border: 1px solid var(--border2);
-  border-radius: 4px;
-  padding: 28px 36px;
+  border-radius: 2px;
+  padding: 34px 42px;
   position: relative;
   overflow: hidden;
 }
+/* Corner ornaments on banner */
+.banner-card .corner-tl,
+.banner-card .corner-tr,
+.banner-card .corner-bl,
+.banner-card .corner-br { width: 22px; height: 22px; opacity: 0.4; }
+
 .banner-card::before {
   content: '';
   position: absolute;
   right: 0; top: 0; bottom: 0;
-  width: 50%;
-  background: radial-gradient(ellipse at right, rgba(138,106,58,0.06) 0%, transparent 70%);
+  width: 40%;
+  background: radial-gradient(ellipse at right, rgba(184,146,58,0.07) 0%, transparent 70%);
 }
+/* Banner decorative large circle */
+.banner-card::after {
+  content: '';
+  position: absolute;
+  right: 10%; top: 50%;
+  transform: translateY(-50%);
+  width: 180px; height: 180px;
+  border-radius: 50%;
+  border: 1px solid rgba(184,146,58,0.06);
+  pointer-events: none;
+}
+
+/* Star cluster top-right of banner */
+.banner-stars {
+  position: absolute;
+  top: 18px; right: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-end;
+}
+.b-star-lg {
+  width: 18px; height: 18px;
+  background: var(--gold);
+  clip-path: polygon(50% 0%, 56% 44%, 100% 50%, 56% 56%, 50% 100%, 44% 56%, 0% 50%, 44% 44%);
+  opacity: 0.5;
+}
+.b-star-sm {
+  width: 10px; height: 10px;
+  background: var(--gold-dim);
+  clip-path: polygon(50% 0%, 56% 44%, 100% 50%, 56% 56%, 50% 100%, 44% 56%, 0% 50%, 44% 44%);
+  opacity: 0.4;
+}
+.b-cross-row {
+  display: flex; gap: 5px; align-items: center;
+}
+.b-cross {
+  width: 8px; height: 8px; position: relative; opacity: 0.3;
+}
+.b-cross::before, .b-cross::after {
+  content: ''; position: absolute; background: var(--gold-pale);
+}
+.b-cross::before { width: 100%; height: 1px; top: 50%; left: 0; transform: translateY(-50%); }
+.b-cross::after { width: 1px; height: 100%; left: 50%; top: 0; transform: translateX(-50%); }
+
 .banner-label {
   font-family: 'Inconsolata', monospace;
   font-size: 10px;
-  letter-spacing: 0.3em;
+  letter-spacing: 0.4em;
   color: var(--gold-dim);
-  margin-bottom: 6px;
+  margin-bottom: 8px;
+  text-transform: uppercase;
 }
 .banner-title {
-  font-family: 'IM Fell English', serif;
-  font-size: 28px;
+  font-family: 'Cinzel', serif;
+  font-size: 32px;
+  font-weight: 700;
   color: var(--text-bright);
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   margin-bottom: 4px;
 }
 .banner-script {
+  font-family: 'Playfair Display', serif;
   font-style: italic;
-  font-size: 20px;
+  font-size: 22px;
   color: var(--gold);
-  opacity: 0.6;
+  opacity: 0.65;
 }
 
-/* Home layout: left 260px, right fills rest */
 .content-grid-home {
   display: grid;
-  grid-template-columns: 260px 1fr;
-  gap: 20px;
+  grid-template-columns: 270px 1fr;
+  gap: 22px;
 }
 
-/* 8b. Left panel + calendar ----------------------------------------------- */
+/* Panel */
 .panel {
   background: var(--bg2);
   border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 24px 20px;
+  border-radius: 2px;
+  padding: 26px 22px;
   text-align: center;
-  margin-bottom: 16px;
+  margin-bottom: 18px;
+  position: relative;
+  overflow: hidden;
 }
-.panel-emblem svg { width: 40px; height: 40px; }
+.panel::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(to right, transparent, var(--gold-dim), transparent);
+}
+/* Corner ornaments on panel */
+.panel .corner-tl, .panel .corner-tr, .panel .corner-bl, .panel .corner-br {
+  width: 16px; height: 16px; opacity: 0.3;
+}
+.panel-emblem svg { width: 44px; height: 44px; }
 .panel-logo-text {
-  font-family: 'IM Fell English', serif;
-  font-size: 16px;
+  font-family: 'Cinzel', serif;
+  font-size: 15px;
+  font-weight: 700;
   color: var(--gold2);
-  letter-spacing: 0.2em;
-  margin: 8px 0 2px;
+  letter-spacing: 0.22em;
+  margin: 10px 0 3px;
 }
 .panel-tagline {
-  font-family: 'Inconsolata', monospace;
-  font-size: 9px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 11px;
   color: var(--text-dim);
   font-style: italic;
   letter-spacing: 0.08em;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 .panel-desc {
   font-size: 13px;
   color: var(--text-dim);
-  line-height: 1.7;
-  margin-bottom: 12px;
+  line-height: 1.75;
+  margin-bottom: 14px;
 }
 .panel-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
   justify-content: center;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
 }
 .tag {
   font-family: 'Inconsolata', monospace;
   font-size: 10px;
-  padding: 3px 8px;
+  padding: 3px 9px;
   border: 1px solid var(--border2);
   color: var(--text-dim);
-  border-radius: 2px;
+  border-radius: 1px;
+  letter-spacing: 0.05em;
 }
 .panel-joinus {
-  font-family: 'Inconsolata', monospace;
+  font-family: 'Cinzel', serif;
   font-size: 10px;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.22em;
   color: var(--gold);
   border: 1px solid var(--gold-dim);
-  padding: 7px 16px;
+  padding: 8px 18px;
   display: inline-block;
   cursor: pointer;
   transition: all 0.2s;
 }
-.panel-joinus:hover { background: rgba(138,106,58,0.1); }
+.panel-joinus:hover { background: rgba(184,146,58,0.08); color: var(--gold3); }
 
+/* Calendar */
 .calendar-panel {
   background: var(--bg2);
   border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 16px;
+  border-radius: 2px;
+  padding: 16px 18px;
+  position: relative;
 }
 .cal-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 12px;
+  margin-bottom: 13px;
 }
 .cal-month {
-  font-family: 'Inconsolata', monospace;
-  font-size: 13px;
+  font-family: 'Cinzel', serif;
+  font-size: 12px;
   color: var(--text-bright);
-  letter-spacing: 0.1em;
+  letter-spacing: 0.15em;
 }
 .cal-nav {
   color: var(--gold-dim);
   cursor: pointer;
-  font-size: 16px;
-  padding: 0 6px;
+  font-size: 15px;
+  padding: 0 5px;
   transition: color 0.2s;
 }
 .cal-nav:hover { color: var(--gold); }
@@ -462,55 +601,59 @@ body {
 .cal-day-name {
   font-family: 'Inconsolata', monospace;
   font-size: 9px;
-  color: var(--text-dim);
+  color: var(--text-muted);
   padding: 3px 0;
+  letter-spacing: 0.04em;
 }
 .cal-day {
   font-family: 'Inconsolata', monospace;
   font-size: 11px;
   color: var(--text-dim);
   padding: 4px 2px;
-  border-radius: 2px;
+  border-radius: 1px;
   cursor: default;
 }
-.cal-day.today  { background: var(--bg3); color: var(--gold2); font-weight: 500; }
-.cal-day.event  { background: rgba(138,106,58,0.12); color: var(--gold); cursor: pointer; }
-.cal-day.event:hover { background: rgba(138,106,58,0.22); }
-.cal-day.empty  { color: transparent; }
-.cal-day.sun    { color: #a07060; }
+.cal-day.today { background: var(--bg3); color: var(--gold2); font-weight: 500; }
+.cal-day.event { background: rgba(184,146,58,0.1); color: var(--gold); cursor: pointer; }
+.cal-day.event:hover { background: rgba(184,146,58,0.2); }
+.cal-day.empty { color: transparent; }
+.cal-day.sun { color: #b07868; }
 
-/* 8c. Notice list --------------------------------------------------------- */
-.notice-list { margin-bottom: 16px; }
+/* Notice list */
+.notice-list { margin-bottom: 18px; }
 .notice-item {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
+  gap: 14px;
+  padding: 13px 18px;
   background: var(--bg2);
   border: 1px solid var(--border);
-  border-left: 3px solid var(--border2);
+  border-left: 2px solid var(--border2);
   margin-bottom: 6px;
   cursor: pointer;
   transition: all 0.2s;
-  border-radius: 2px;
+  border-radius: 1px;
 }
-.notice-item:hover  { border-color: var(--gold-dim); background: var(--bg3); }
+.notice-item:hover { border-color: var(--gold-dim); background: var(--bg3); }
 .notice-item.pinned { border-left-color: var(--gold); }
-.notice-item.event  { border-left-color: var(--gold2); }
-.ni-icon  { font-size: 14px; flex-shrink: 0; opacity: 0.5; }
-.ni-text  { flex: 1; min-width: 0; }
+.notice-item.event { border-left-color: var(--gold2); }
+.ni-icon { font-size: 13px; flex-shrink: 0; opacity: 0.45; }
+.ni-text { flex: 1; min-width: 0; }
 .ni-title {
-  font-size: 14px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px;
   color: var(--text-bright);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  letter-spacing: 0.02em;
 }
-.ni-sub  {
+.ni-sub {
   font-family: 'Inconsolata', monospace;
   font-size: 10px;
-  color: var(--text-dim);
+  color: var(--text-muted);
   margin-top: 2px;
+  letter-spacing: 0.06em;
 }
 .ni-date {
   font-family: 'Inconsolata', monospace;
@@ -519,32 +662,32 @@ body {
   flex-shrink: 0;
 }
 
-/* 8d. Attendance bar ------------------------------------------------------ */
+/* Attendance bar */
 .attendance-bar {
   background: var(--bg2);
   border: 1px solid var(--border);
-  border-radius: 4px;
+  border-radius: 2px;
   padding: 14px 18px;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 .att-title {
-  font-family: 'Inconsolata', monospace;
-  font-size: 11px;
-  letter-spacing: 0.2em;
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  letter-spacing: 0.25em;
   color: var(--gold);
   display: block;
 }
 .att-sub {
   font-family: 'Inconsolata', monospace;
   font-size: 9px;
-  color: var(--text-dim);
-  letter-spacing: 0.15em;
+  color: var(--text-muted);
+  letter-spacing: 0.18em;
   display: block;
   margin-top: 2px;
 }
-.att-members { display: flex; gap: 10px; }
+.att-members { display: flex; gap: 8px; }
 .att-member {
   font-family: 'Inconsolata', monospace;
   font-size: 11px;
@@ -552,94 +695,172 @@ body {
   padding: 4px 10px;
   background: var(--bg3);
   border: 1px solid var(--border);
-  border-radius: 2px;
+  border-radius: 1px;
 }
 
+/* ===== PAGE TITLE BAR ===== */
+.page-title-bar {
+  margin-bottom: 30px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 16px;
+  position: relative;
+}
+.page-title-bar::after {
+  content: '';
+  position: absolute;
+  bottom: -1px; left: 0;
+  width: 60px; height: 1px;
+  background: var(--gold-dim);
+}
+.ptb-label {
+  font-family: 'Inconsolata', monospace;
+  font-size: 10px;
+  letter-spacing: 0.4em;
+  color: var(--gold-dim);
+  margin-bottom: 5px;
+  text-transform: uppercase;
+}
+.ptb-title {
+  font-family: 'Cinzel', serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--text-bright);
+  letter-spacing: 0.04em;
+}
+/* Decorative star next to page title */
+.ptb-star {
+  display: inline-block;
+  width: 14px; height: 14px;
+  background: var(--gold-dim);
+  clip-path: polygon(50% 0%, 56% 44%, 100% 50%, 56% 56%, 50% 100%, 44% 56%, 0% 50%, 44% 44%);
+  margin-left: 14px;
+  vertical-align: middle;
+  opacity: 0.5;
+  transform: translateY(-3px);
+}
 
-/* ==========================================================================
-   9. PAGE: WORLD OVERVIEW
-   ========================================================================== */
+/* ===== WORLD PAGE ===== */
 .world-cards-row {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 14px;
-  margin-bottom: 32px;
+  margin-bottom: 34px;
 }
 .world-big-card {
   background: var(--bg2);
   border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 28px 20px 22px;
+  border-radius: 2px;
+  padding: 30px 20px 24px;
   text-align: center;
   cursor: pointer;
-  transition: all 0.25s;
+  transition: all 0.28s;
+  position: relative;
+  overflow: hidden;
 }
+.world-big-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(to right, transparent, var(--gold-dim), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.world-big-card:hover::before { opacity: 1; }
 .world-big-card:hover {
   border-color: var(--gold-dim);
   background: var(--bg3);
-  transform: translateY(-2px);
+  transform: translateY(-3px);
 }
-.wbc-icon svg { width: 60px; height: 60px; margin-bottom: 12px; }
+.wbc-icon svg { width: 58px; height: 58px; margin-bottom: 14px; }
 .wbc-title {
-  font-family: 'Inconsolata', monospace;
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.25em;
+  font-family: 'Cinzel', serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.28em;
   color: var(--gold2);
-  margin-bottom: 4px;
+  margin-bottom: 5px;
 }
-.wbc-sub { font-size: 13px; color: var(--text-dim); font-style: italic; }
+.wbc-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px;
+  color: var(--text-dim);
+  font-style: italic;
+}
 
 .world-lore-block { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 .wlb-section {
   background: var(--bg2);
   border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 24px;
+  border-radius: 2px;
+  padding: 26px;
+  position: relative;
+  overflow: hidden;
+}
+.wlb-section .corner-tl, .wlb-section .corner-tr,
+.wlb-section .corner-bl, .wlb-section .corner-br {
+  width: 14px; height: 14px; opacity: 0.25;
 }
 .wlb-label {
   font-family: 'Inconsolata', monospace;
   font-size: 10px;
-  letter-spacing: 0.3em;
+  letter-spacing: 0.35em;
   color: var(--gold-dim);
-  margin-bottom: 6px;
+  margin-bottom: 7px;
 }
 .wlb-title {
-  font-family: 'IM Fell English', serif;
+  font-family: 'Cinzel', serif;
   font-size: 20px;
+  font-weight: 400;
   color: var(--text-bright);
-  margin-bottom: 12px;
+  margin-bottom: 13px;
 }
-.wlb-body { font-size: 15px; line-height: 1.85; color: var(--text-dim); }
+.wlb-body {
+  font-size: 15px;
+  line-height: 1.9;
+  color: var(--text-dim);
+}
 .wlb-quote {
-  margin-top: 16px;
-  border-left: 2px solid var(--gold-dim);
-  padding: 10px 16px;
+  margin-top: 18px;
+  border-left: 1px solid var(--gold-dim);
+  padding: 10px 18px;
+  font-family: 'Playfair Display', serif;
   font-style: italic;
   font-size: 14px;
   color: var(--text-dim);
-  line-height: 1.7;
+  line-height: 1.75;
 }
 
-
-/* ==========================================================================
-   10. PAGE: SETTLEMENTS
-   ========================================================================== */
-.settlement-cards {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-}
+/* ===== SETTLEMENTS ===== */
+.settlement-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
 .settlement-card {
   background: var(--bg2);
   border: 1px solid var(--border);
-  border-radius: 4px;
+  border-radius: 2px;
   overflow: hidden;
+  position: relative;
 }
-.sc-header { padding: 22px 20px 18px; }
+.sc-header {
+  padding: 24px 22px 20px;
+  position: relative;
+}
 .sc-header.lambda { background: linear-gradient(135deg, #0f130a 0%, #141a0e 100%); border-bottom: 1px solid #2a3020; }
 .sc-header.omega  { background: linear-gradient(135deg, #080e14 0%, #0c1220 100%); border-bottom: 1px solid #20283a; }
 .sc-header.alpha  { background: linear-gradient(135deg, #130c08 0%, #1a100a 100%); border-bottom: 1px solid #3a2818; }
+
+/* Roman numeral decoration */
+.sc-number {
+  position: absolute;
+  top: 50%; right: 18px;
+  transform: translateY(-50%);
+  font-family: 'Cinzel', serif;
+  font-size: 48px;
+  font-weight: 900;
+  color: rgba(255,255,255,0.03);
+  letter-spacing: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
 .sc-name-label {
   font-family: 'Inconsolata', monospace;
   font-size: 9px;
@@ -649,287 +870,134 @@ body {
   opacity: 0.6;
 }
 .sc-name {
-  font-family: 'IM Fell English', serif;
+  font-family: 'Cinzel', serif;
   font-size: 26px;
+  font-weight: 700;
   color: var(--text-bright);
   letter-spacing: 0.1em;
 }
-.sc-subtitle { font-size: 14px; font-style: italic; color: var(--gold); margin-top: 2px; }
-.sc-body { padding: 18px 20px; }
+.sc-subtitle {
+  font-family: 'Playfair Display', serif;
+  font-size: 14px;
+  font-style: italic;
+  color: var(--gold);
+  margin-top: 3px;
+}
+.sc-body { padding: 20px 22px; }
 .sc-tag {
   font-family: 'Inconsolata', monospace;
   font-size: 10px;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.22em;
   color: var(--gold-dim);
   margin-bottom: 10px;
 }
-.sc-body p { font-size: 14px; line-height: 1.85; color: var(--text-dim); }
+.sc-body p { font-size: 14px; line-height: 1.9; color: var(--text-dim); }
 
-
-/* ==========================================================================
-   11. PAGE: ANOMALY ZONE
-   ========================================================================== */
-.anomaly-layout {
-  display: grid;
-  grid-template-columns: 1fr 280px;
-  gap: 20px;
-  align-items: start;
-}
-.anomaly-map {
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  position: relative;
-  overflow: hidden;
-}
-#map-canvas { display: block; width: 100%; }
-
-/* Clickable location dots on the map */
-.map-point {
-  position: absolute;
-  cursor: pointer;
-  transform: translate(-50%, -50%);
-}
-.mp-dot {
-  width: 12px; height: 12px;
-  background: var(--gold);
-  border-radius: 50%;
-  margin: 0 auto;
-  position: relative;
-  transition: transform 0.2s;
-  box-shadow: 0 0 8px rgba(138,106,58,0.5);
-}
-.map-point:hover .mp-dot { transform: scale(1.4); }
-.mp-dot::before {
-  content: '';
-  position: absolute;
-  inset: -4px;
-  border: 1px solid var(--gold);
-  border-radius: 50%;
-  opacity: 0.4;
-  animation: mppulse 2s ease-in-out infinite;
-}
-@keyframes mppulse {
-  0%,100% { transform: scale(1);   opacity: 0.4; }
-  50%      { transform: scale(1.5); opacity: 0; }
-}
-.mp-label {
-  font-family: 'Inconsolata', monospace;
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  color: var(--gold);
-  text-align: center;
-  margin-top: 4px;
-  white-space: nowrap;
-  text-shadow: 0 1px 4px rgba(0,0,0,0.8);
-}
-
-/* Info panel on the right */
-.anomaly-info {
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 22px 20px;
-}
-.ai-title {
-  font-family: 'Inconsolata', monospace;
-  font-size: 11px;
-  letter-spacing: 0.25em;
-  color: var(--gold);
-  margin-bottom: 10px;
-}
-.ai-body { font-size: 14px; line-height: 1.8; color: var(--text-dim); font-style: italic; }
-
-
-/* ==========================================================================
-   12. PAGE: THE FATES
-   ========================================================================== */
-.fates-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-}
-.fate-card {
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 28px 24px;
-  text-align: center;
-  transition: all 0.25s;
-}
-.fate-card:hover { transform: translateY(-3px); }
-.clotho-card:hover   { border-color: var(--clotho); }
-.lachesis-card:hover { border-color: var(--lachesis); }
-.atropos-card:hover  { border-color: var(--atropos); }
-.fate-symbol svg { width: 60px; height: 60px; margin-bottom: 14px; }
-.fate-name {
-  font-family: 'Inconsolata', monospace;
-  font-size: 16px;
-  font-weight: 500;
-  letter-spacing: 0.3em;
-  margin-bottom: 4px;
-}
-.fate-name.clotho   { color: var(--clotho); }
-.fate-name.lachesis { color: var(--lachesis); }
-.fate-name.atropos  { color: var(--atropos); }
-.fate-alias  { font-style: italic; font-size: 14px; color: var(--text-dim); margin-bottom: 14px; }
-.fate-desc   { font-size: 14px; line-height: 1.8; color: var(--text-dim); margin-bottom: 14px; }
-.fate-keywords { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
-.fate-keywords span {
-  font-family: 'Inconsolata', monospace;
-  font-size: 10px;
-  padding: 3px 10px;
-  border: 1px solid var(--border);
-  color: var(--text-dim);
-  border-radius: 2px;
-}
-
-
-/* ==========================================================================
-   13. PAGE: DREAM CORE
-   ========================================================================== */
-.dreamcore-layout {
-  display: grid;
-  grid-template-columns: 320px 1fr;
-  gap: 24px;
-  align-items: start;
-}
-.dc-visual {
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-#core-canvas { display: block; }
-.dc-info { display: flex; flex-direction: column; gap: 16px; }
-.dc-section {
-  background: var(--bg2);
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 20px 22px;
-}
-.dc-label {
-  font-family: 'Inconsolata', monospace;
-  font-size: 10px;
-  letter-spacing: 0.3em;
-  color: var(--gold-dim);
-  margin-bottom: 8px;
-}
-.dc-section p { font-size: 15px; line-height: 1.85; color: var(--text-dim); }
-.dc-warning {
-  font-size: 14px;
-  line-height: 1.8;
-  color: #8a5040;
-  font-style: italic;
-  border-left: 2px solid #6a3020;
-  padding-left: 14px;
-}
-
-
-/* ==========================================================================
-   14. PAGE: MEMBERS — GRID + FATE FILTER
-   ========================================================================== */
-.fate-filter-row { display: flex; gap: 8px; margin-bottom: 24px; }
+/* ===== MEMBERS ===== */
+.fate-filter-row { display: flex; gap: 8px; margin-bottom: 26px; }
 .fate-filter {
-  font-family: 'Inconsolata', monospace;
-  font-size: 11px;
-  letter-spacing: 0.2em;
-  padding: 7px 16px;
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  padding: 7px 18px;
   background: var(--bg2);
   border: 1px solid var(--border);
   color: var(--text-dim);
   cursor: pointer;
   transition: all 0.2s;
-  border-radius: 2px;
+  border-radius: 1px;
 }
-.fate-filter:hover,          .fate-filter.active          { border-color: var(--gold-dim); color: var(--gold); }
-.fate-filter.clotho:hover,   .fate-filter.clotho.active   { border-color: var(--clotho);   color: var(--clotho); }
+.fate-filter:hover, .fate-filter.active { border-color: var(--gold-dim); color: var(--gold); }
+.fate-filter.clotho:hover, .fate-filter.clotho.active { border-color: var(--clotho); color: var(--clotho); }
 .fate-filter.lachesis:hover, .fate-filter.lachesis.active { border-color: var(--lachesis); color: var(--lachesis); }
-.fate-filter.atropos:hover,  .fate-filter.atropos.active  { border-color: var(--atropos);  color: var(--atropos); }
+.fate-filter.atropos:hover, .fate-filter.atropos.active { border-color: var(--atropos); color: var(--atropos); }
 
 .members-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
   gap: 14px;
 }
 .member-card {
   background: var(--bg2);
   border: 1px solid var(--border);
-  border-radius: 4px;
+  border-radius: 2px;
   overflow: hidden;
   cursor: pointer;
   transition: all 0.25s;
 }
-.member-card:hover { border-color: var(--gold-dim); transform: translateY(-2px); }
+.member-card:hover { border-color: var(--gold-dim); transform: translateY(-3px); }
 .mc-img {
   aspect-ratio: 3/4;
   background: var(--bg3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: flex; align-items: center; justify-content: center;
   border-bottom: 1px solid var(--border);
   overflow: hidden;
 }
 .mc-img img { width: 100%; height: 100%; object-fit: cover; }
 .mc-placeholder {
-  font-family: 'IM Fell English', serif;
-  font-size: 48px;
+  font-family: 'Cinzel', serif;
+  font-size: 52px;
   color: var(--border2);
   font-weight: 300;
 }
-.mc-placeholder.add { font-size: 36px; color: var(--gold-dim); }
+.mc-placeholder.add { font-size: 38px; color: var(--gold-dim); }
 .add-card { border-style: dashed; }
 .add-card:hover { border-color: var(--gold-dim); border-style: dashed; }
-.mc-name  { font-size: 15px; color: var(--text-bright); padding: 10px 12px 2px; }
-.mc-fate  {
-  font-family: 'Inconsolata', monospace;
-  font-size: 10px;
-  letter-spacing: 0.2em;
-  padding: 0 12px 4px;
+.mc-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 16px;
+  color: var(--text-bright);
+  padding: 10px 13px 2px;
+}
+.mc-fate {
+  font-family: 'Cinzel', serif;
+  font-size: 9px;
+  letter-spacing: 0.22em;
+  padding: 0 13px 5px;
   color: var(--text-dim);
 }
-.mc-fate.clotho   { color: var(--clotho); }
+.mc-fate.clotho { color: var(--clotho); }
 .mc-fate.lachesis { color: var(--lachesis); }
-.mc-fate.atropos  { color: var(--atropos); }
-.mc-sub { font-size: 12px; font-style: italic; color: var(--text-dim); padding: 0 12px 12px; line-height: 1.4; }
+.mc-fate.atropos { color: var(--atropos); }
+.mc-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 13px;
+  font-style: italic;
+  color: var(--text-dim);
+  padding: 0 13px 13px;
+  line-height: 1.4;
+}
 
-
-/* ==========================================================================
-   15. PAGE: MEMBER DETAIL
-   ========================================================================== */
+/* ===== MEMBER DETAIL ===== */
 .md-layout {
   display: grid;
-  grid-template-columns: 1fr 320px;
-  min-height: calc(100vh - var(--topbar-h) - 56px);
+  grid-template-columns: 1fr 330px;
+  gap: 0;
+  min-height: calc(100vh - var(--topbar-h) - 60px);
 }
 .md-left {
   position: relative;
   overflow: hidden;
   background: var(--bg2);
   border: 1px solid var(--border);
-  border-radius: 4px 0 0 4px;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
+  border-radius: 2px 0 0 2px;
+  display: flex; align-items: flex-end; justify-content: center;
   min-height: 500px;
 }
 .md-art-placeholder {
-  font-family: 'IM Fell English', serif;
-  font-size: 120px;
+  font-family: 'Cinzel', serif;
+  font-size: 130px;
   color: var(--border);
-  padding-bottom: 40px;
+  padding-bottom: 44px;
 }
 .md-quote {
   position: absolute;
-  top: 24px;
-  left: 50%;
+  top: 26px; left: 50%;
   transform: translateX(-50%);
-  background: rgba(10,9,7,0.7);
-  padding: 8px 18px;
+  background: rgba(8,7,5,0.75);
+  padding: 8px 20px;
   border: 1px solid var(--border);
+  font-family: 'Playfair Display', serif;
   font-style: italic;
   font-size: 14px;
   color: var(--text-dim);
@@ -937,418 +1005,354 @@ body {
   border-radius: 20px;
 }
 .md-right {
-  background: rgba(10,9,7,0.9);
+  background: rgba(8,7,5,0.92);
   border: 1px solid var(--border);
   border-left: none;
-  border-radius: 0 4px 4px 0;
-  padding: 24px 22px;
+  border-radius: 0 2px 2px 0;
+  padding: 26px 24px;
   overflow-y: auto;
 }
 .md-back {
-  font-family: 'Inconsolata', monospace;
-  font-size: 10px;
-  color: var(--text-dim);
-  letter-spacing: 0.2em;
+  font-family: 'Cinzel', serif;
+  font-size: 9px;
+  color: var(--text-muted);
+  letter-spacing: 0.25em;
   cursor: pointer;
-  margin-bottom: 16px;
+  margin-bottom: 18px;
   display: inline-block;
   transition: color 0.2s;
 }
 .md-back:hover { color: var(--gold); }
 .md-faction-badge {
-  font-family: 'Inconsolata', monospace;
-  font-size: 10px;
-  letter-spacing: 0.25em;
-  margin-bottom: 4px;
+  font-family: 'Cinzel', serif;
+  font-size: 9px;
+  letter-spacing: 0.28em;
+  margin-bottom: 5px;
 }
 .md-char-name {
-  font-family: 'IM Fell English', serif;
+  font-family: 'Cinzel', serif;
   font-size: 32px;
+  font-weight: 700;
   color: var(--text-bright);
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 .md-info-label {
   font-family: 'Inconsolata', monospace;
   font-size: 10px;
-  letter-spacing: 0.25em;
+  letter-spacing: 0.28em;
   color: var(--gold-dim);
-  margin-bottom: 8px;
+  margin-bottom: 9px;
 }
 .md-info-row {
-  display: flex;
-  gap: 12px;
+  display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;
   font-family: 'Inconsolata', monospace;
-  font-size: 12px;
+  font-size: 11px;
   color: var(--text-dim);
-  margin-bottom: 14px;
-  flex-wrap: wrap;
 }
 .md-info-item {
   background: var(--bg3);
   border: 1px solid var(--border);
   padding: 3px 10px;
-  border-radius: 2px;
+  border-radius: 1px;
 }
 .md-stat-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 6px;
-  margin-bottom: 16px;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 7px; margin-bottom: 18px;
 }
-.md-stat { display: flex; flex-direction: column; gap: 3px; }
-.md-stat-name { font-family: 'Inconsolata', monospace; font-size: 10px; color: var(--text-dim); }
-.md-stat-bar  { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
-.md-stat-fill { height: 100%; background: var(--gold); border-radius: 2px; transition: width 0.8s ease; }
-.md-section-header { display: flex; align-items: center; gap: 8px; margin: 16px 0 8px; }
-.md-section-title {
+.md-stat { display: flex; flex-direction: column; gap: 4px; }
+.md-stat-name {
   font-family: 'Inconsolata', monospace;
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.2em;
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 0.06em;
+}
+.md-stat-bar { height: 3px; background: var(--border); border-radius: 1px; overflow: hidden; }
+.md-stat-fill { height: 100%; background: var(--gold); border-radius: 1px; transition: width 0.8s ease; }
+.md-section-header { display: flex; align-items: center; gap: 8px; margin: 18px 0 9px; }
+.md-section-title {
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.22em;
   color: var(--gold);
 }
 .md-section-line { flex: 1; height: 1px; background: var(--border); }
-.md-personality  { font-size: 14px; line-height: 1.8; color: var(--text-dim); }
+.md-personality { font-size: 14px; line-height: 1.85; color: var(--text-dim); }
 .md-total {
-  margin-top: 12px;
-  text-align: right;
+  margin-top: 13px; text-align: right;
   font-family: 'Inconsolata', monospace;
-  font-size: 12px;
-  color: var(--text-dim);
+  font-size: 12px; color: var(--text-dim);
 }
-.md-total strong { color: var(--gold2); font-size: 16px; margin-left: 6px; }
+.md-total strong { color: var(--gold2); font-size: 17px; margin-left: 6px; }
 
-
-/* ==========================================================================
-   16. PAGE: MAKE YOUR CONSTRUCT — APPLICATION TEMPLATE
-   ========================================================================== */
-.app-layout {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
-.app-block {
+/* ===== SYSTEM ===== */
+.system-placeholder {
   background: var(--bg2);
   border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 20px 22px;
+  border-radius: 2px;
+  padding: 64px 44px;
+  text-align: center;
+  max-width: 520px;
+  margin: 0 auto;
+  position: relative;
 }
-.app-block.full { grid-column: 1 / -1; }
-
-.block-label {
+.system-placeholder .corner-tl, .system-placeholder .corner-tr,
+.system-placeholder .corner-bl, .system-placeholder .corner-br {
+  width: 20px; height: 20px;
+}
+.sp-icon svg { width: 68px; height: 68px; }
+.sp-title {
+  font-family: 'Cinzel', serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-bright);
+  margin: 18px 0 5px;
+}
+.sp-sub {
   font-family: 'Inconsolata', monospace;
   font-size: 10px;
   letter-spacing: 0.3em;
   color: var(--gold-dim);
-  margin-bottom: 12px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid var(--border);
+  margin-bottom: 18px;
 }
-
-/* Profile two-column grid */
-.profile-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 6px 24px;
-}
-.field-row  { display: flex; gap: 8px; align-items: baseline; padding: 4px 0; }
-.field-key  {
-  font-family: 'Inconsolata', monospace;
-  font-size: 11px;
-  color: var(--gold);
-  letter-spacing: 0.1em;
-  min-width: 140px;
-  flex-shrink: 0;
-}
-.field-val  { font-size: 13px; color: var(--text-dim); font-style: italic; }
-
-/* Faction colour helpers */
-.fate-c { color: var(--clotho); }
-.fate-l { color: var(--lachesis); }
-.fate-a { color: var(--atropos); }
-
-/* Weapon / lore text block */
-.app-lore-text {
-  font-size: 14px;
-  line-height: 1.85;
-  color: var(--text-dim);
-  border-left: 2px solid var(--gold-dim);
-  padding-left: 14px;
-  margin: 10px 0 16px;
-}
-.skill-entry { margin-bottom: 14px; }
-.skill-name  {
-  font-family: 'Inconsolata', monospace;
-  font-size: 12px;
-  color: var(--gold);
-  margin-bottom: 4px;
-}
-.skill-desc  { font-size: 13px; line-height: 1.75; color: var(--text-dim); }
-.app-diamond { color: var(--gold); margin-right: 6px; font-size: 11px; }
-
-/* Personality traits */
-.app-trait-note {
-  font-family: 'Inconsolata', monospace;
-  font-size: 10px;
-  color: var(--gold-dim);
-  margin-bottom: 10px;
-}
-.trait-row {
-  display: flex;
-  gap: 8px;
-  align-items: flex-start;
-  font-size: 13px;
-  color: var(--text-dim);
-  line-height: 1.65;
-  margin-bottom: 6px;
-}
-.trait-pos { font-family: 'Inconsolata', monospace; font-size: 11px; color: #6a9060; flex-shrink: 0; }
-.trait-neg { font-family: 'Inconsolata', monospace; font-size: 11px; color: #9a5050; flex-shrink: 0; }
-.personality-expand {
-  font-size: 13px;
+.sp-body {
+  font-family: 'Playfair Display', serif;
+  font-size: 15px;
   line-height: 1.85;
   color: var(--text-dim);
   font-style: italic;
-  border-top: 1px solid var(--border);
-  padding-top: 12px;
-  margin-top: 12px;
 }
 
-/* History secret lore box */
-.app-secret-note {
-  background: var(--bg3);
-  border: 1px solid var(--border);
-  border-left: 3px solid var(--gold-dim);
-  border-radius: 2px;
-  padding: 10px 14px;
-  font-size: 13px;
-  color: var(--text-dim);
-  margin: 14px 0;
-}
-.app-secret-label {
-  font-family: 'Inconsolata', monospace;
-  font-size: 10px;
-  color: var(--gold-dim);
-  letter-spacing: 0.15em;
-  display: block;
-  margin-bottom: 4px;
-}
-.app-flavor-quote {
-  font-style: italic;
-  font-size: 13px;
-  color: var(--text-dim);
-  opacity: 0.6;
-  text-align: right;
-  margin-top: 10px;
-}
-
-
-/* ==========================================================================
-   17. PAGE: SYSTEM
-   ========================================================================== */
-.system-placeholder {
+/* ===== FATES ===== */
+.fates-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.fate-card {
   background: var(--bg2);
   border: 1px solid var(--border);
-  border-radius: 4px;
-  padding: 60px 40px;
+  border-radius: 2px;
+  padding: 30px 26px;
   text-align: center;
-  max-width: 500px;
-  margin: 0 auto;
+  transition: all 0.28s;
+  position: relative;
+  overflow: hidden;
 }
-.sp-icon svg { width: 70px; height: 70px; }
-.sp-title { font-family: 'IM Fell English', serif; font-size: 24px; color: var(--text-bright); margin: 16px 0 4px; }
-.sp-sub   { font-family: 'Inconsolata', monospace; font-size: 11px; letter-spacing: 0.25em; color: var(--gold-dim); margin-bottom: 16px; }
-.sp-body  { font-size: 15px; line-height: 1.8; color: var(--text-dim); font-style: italic; }
+/* Roman arc background */
+.fate-card::after {
+  content: '';
+  position: absolute;
+  bottom: -30px; left: 50%;
+  transform: translateX(-50%);
+  width: 160px; height: 160px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.02);
+  pointer-events: none;
+}
+.fate-card:hover { transform: translateY(-4px); }
+.clotho-card:hover { border-color: var(--clotho); }
+.lachesis-card:hover { border-color: var(--lachesis); }
+.atropos-card:hover { border-color: var(--atropos); }
+.fate-symbol svg { width: 58px; height: 58px; margin-bottom: 16px; }
+.fate-name {
+  font-family: 'Cinzel', serif;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.32em;
+  margin-bottom: 5px;
+}
+.fate-name.clotho { color: var(--clotho); }
+.fate-name.lachesis { color: var(--lachesis); }
+.fate-name.atropos { color: var(--atropos); }
+.fate-alias {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 15px;
+  color: var(--text-dim);
+  margin-bottom: 16px;
+}
+.fate-desc { font-size: 14px; line-height: 1.85; color: var(--text-dim); margin-bottom: 16px; }
+.fate-keywords { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+.fate-keywords span {
+  font-family: 'Inconsolata', monospace;
+  font-size: 10px;
+  padding: 3px 10px;
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  border-radius: 1px;
+  letter-spacing: 0.06em;
+}
 
+/* ===== DREAM CORE ===== */
+.dreamcore-layout { display: grid; grid-template-columns: 320px 1fr; gap: 26px; align-items: start; }
+.dc-visual {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 22px;
+  display: flex; align-items: center; justify-content: center;
+}
+#core-canvas { display: block; }
+.dc-info { display: flex; flex-direction: column; gap: 18px; }
+.dc-section {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 22px 24px;
+  position: relative;
+}
+.dc-section::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(to right, transparent, var(--gold-dim) 50%, transparent);
+  opacity: 0.5;
+}
+.dc-label {
+  font-family: 'Inconsolata', monospace;
+  font-size: 10px;
+  letter-spacing: 0.35em;
+  color: var(--gold-dim);
+  margin-bottom: 9px;
+}
+.dc-section p { font-size: 15px; line-height: 1.9; color: var(--text-dim); }
+.dc-warning {
+  font-family: 'Playfair Display', serif;
+  font-size: 14px;
+  line-height: 1.8;
+  color: #9a5848;
+  font-style: italic;
+  border-left: 1px solid #7a3828;
+  padding-left: 16px;
+}
 
-/* ==========================================================================
-   18. NOTICE MODAL
-   ========================================================================== */
+/* ===== ANOMALY MAP ===== */
+.anomaly-layout { display: grid; grid-template-columns: 1fr 290px; gap: 22px; align-items: start; }
+.anomaly-map { background: var(--bg2); border: 1px solid var(--border); border-radius: 2px; position: relative; overflow: hidden; }
+#map-canvas { display: block; width: 100%; }
+.map-point { position: absolute; cursor: pointer; transform: translate(-50%, -50%); }
+.mp-dot {
+  width: 11px; height: 11px;
+  background: var(--gold);
+  border-radius: 50%;
+  margin: 0 auto;
+  position: relative;
+  transition: transform 0.2s;
+  box-shadow: 0 0 9px rgba(184,146,58,0.55);
+}
+.map-point:hover .mp-dot { transform: scale(1.45); }
+.mp-dot::before {
+  content: '';
+  position: absolute; inset: -4px;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  opacity: 0.35;
+  animation: mppulse 2.2s ease-in-out infinite;
+}
+@keyframes mppulse {
+  0%,100% { transform: scale(1); opacity: 0.35; }
+  50% { transform: scale(1.6); opacity: 0; }
+}
+.mp-label {
+  font-family: 'Cinzel', serif;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  color: var(--gold);
+  text-align: center;
+  margin-top: 4px;
+  white-space: nowrap;
+  text-shadow: 0 1px 5px rgba(0,0,0,0.9);
+}
+.anomaly-info {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 24px 22px;
+}
+.ai-title {
+  font-family: 'Cinzel', serif;
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  color: var(--gold);
+  margin-bottom: 12px;
+}
+.ai-body {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 15px;
+  line-height: 1.85;
+  color: var(--text-dim);
+  font-style: italic;
+}
+
+/* ===== MODAL ===== */
 .modal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.7);
-  z-index: 200;
-  align-items: center;
-  justify-content: center;
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.78); z-index: 200;
+  align-items: center; justify-content: center;
 }
 .modal.open { display: flex; }
 .modal-box {
   background: var(--bg2);
   border: 1px solid var(--border2);
-  border-radius: 4px;
-  padding: 28px 32px;
-  max-width: 500px;
+  border-radius: 2px;
+  padding: 32px 36px;
+  max-width: 520px;
   width: 90%;
   animation: modalin 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.modal-box .corner-tl, .modal-box .corner-tr,
+.modal-box .corner-bl, .modal-box .corner-br {
+  width: 18px; height: 18px;
 }
 @keyframes modalin {
   from { opacity: 0; transform: scale(0.97) translateY(8px); }
-  to   { opacity: 1; transform: scale(1)    translateY(0); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
 }
 .modal-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 16px;
+  margin-bottom: 18px;
   border-bottom: 1px solid var(--border);
-  padding-bottom: 12px;
+  padding-bottom: 14px;
 }
-.modal-title { font-family: 'IM Fell English', serif; font-size: 20px; color: var(--text-bright); }
+.modal-title {
+  font-family: 'Cinzel', serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-bright);
+}
 .modal-close {
-  background: none;
-  border: none;
-  color: var(--text-dim);
-  cursor: pointer;
-  font-size: 16px;
-  transition: color 0.2s;
+  background: none; border: none;
+  color: var(--text-dim); cursor: pointer;
+  font-size: 15px; transition: color 0.2s;
 }
 .modal-close:hover { color: var(--gold); }
-.modal-body { font-size: 15px; line-height: 1.85; color: var(--text-dim); }
-
-
-/* ==========================================================================
-   19. ENTER OVERLAY
-   ========================================================================== */
-#enter-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(6, 5, 4, 0.97);
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: opacity 0.8s ease;
-}
-#enter-overlay.hidden { opacity: 0; pointer-events: none; }
-
-#enter-box {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 14px;
-  text-align: center;
-}
-#enter-emblem svg {
-  width: 72px;
-  height: 72px;
-  animation: enter-pulse 3s ease-in-out infinite;
-}
-@keyframes enter-pulse {
-  0%,100% { opacity: 0.6; transform: scale(1); }
-  50%      { opacity: 1;   transform: scale(1.04); }
-}
-#enter-title {
-  font-family: 'IM Fell English', serif;
-  font-size: 36px;
-  letter-spacing: 0.2em;
-  color: var(--gold2);
-  margin-top: 6px;
-}
-#enter-sub {
-  font-family: 'Inconsolata', monospace;
-  font-size: 11px;
-  letter-spacing: 0.15em;
+.modal-body {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px;
+  line-height: 1.9;
   color: var(--text-dim);
-  font-style: italic;
-}
-#enter-btn {
-  margin-top: 16px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-family: 'Inconsolata', monospace;
-  font-size: 13px;
-  letter-spacing: 0.25em;
-  color: var(--gold);
-  background: none;
-  border: 1px solid var(--gold-dim);
-  padding: 12px 28px;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-#enter-btn svg { width: 16px; height: 16px; }
-#enter-btn:hover { background: rgba(138,106,58,0.1); border-color: var(--gold); color: var(--gold2); }
-#enter-note {
-  font-family: 'Inconsolata', monospace;
-  font-size: 9px;
-  letter-spacing: 0.15em;
-  color: var(--text-dim);
-  opacity: 0.4;
-  margin-top: 4px;
 }
 
-
-/* ==========================================================================
-   20. MUSIC BAR + YOUTUBE PLAYER
-   ========================================================================== */
-
-/* Hidden YouTube IFrame — kept off screen */
-#yt-player-wrap {
+/* ===== SCATTERED DECO ELEMENTS (global) ===== */
+/* Cross cluster in bottom-right of main area — cosmetic only */
+.global-cross-cluster {
   position: fixed;
-  left: -9999px;
-  top: -9999px;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
+  right: 28px;
+  bottom: 28px;
+  display: grid;
+  grid-template-columns: repeat(3, 10px);
+  grid-template-rows: repeat(3, 10px);
+  gap: 6px;
+  opacity: 0.12;
   pointer-events: none;
-  z-index: -1;
+  z-index: 5;
 }
-
-/* Music bar sits between nav and footer inside the sidebar */
-#music-bar {
-  padding: 12px 16px;
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  background: rgba(10,9,7,0.6);
+.gcc-cross {
+  width: 8px; height: 8px; position: relative;
 }
-#music-bar-track  { flex: 1; min-width: 0; }
-#music-track-name {
-  font-family: 'Inconsolata', monospace;
-  font-size: 10px;
-  color: var(--text-bright);
-  letter-spacing: 0.05em;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  transition: color 0.4s;
+.gcc-cross::before, .gcc-cross::after {
+  content: ''; position: absolute; background: var(--gold);
 }
-#music-track-name.member-track { color: var(--gold); }
-#music-track-sub {
-  font-family: 'Inconsolata', monospace;
-  font-size: 9px;
-  color: var(--text-dim);
-  letter-spacing: 0.08em;
-  margin-top: 2px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-#music-bar-controls { display: flex; align-items: center; gap: 2px; flex-shrink: 0; }
-.music-btn {
-  width: 26px; height: 26px;
-  background: none;
-  border: none;
-  color: var(--text-dim);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 2px;
-  transition: color 0.2s;
-  padding: 0;
-}
-.music-btn svg { width: 16px; height: 16px; }
-.music-btn:hover { color: var(--gold); }
-
-/* Small play-indicator prefix when music is active */
-#music-bar.playing #music-track-name::before {
-  content: '▶ ';
-  color: var(--gold-dim);
-  font-size: 8px;
-}
+.gcc-cross::before { width: 100%; height: 1px; top: 50%; left: 0; transform: translateY(-50%); }
+.gcc-cross::after { width: 1px; height: 100%; left: 50%; top: 0; transform: translateX(-50%); }
